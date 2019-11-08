@@ -9,7 +9,10 @@ public class Task1 {
 
         System.out.println(str1);
         System.out.println(str2);
-        System.out.println(str1 + str3 + str2);
+        //System.out.println(str1 + str3 + str2); //would be shorter, but we need to use "print"
+        System.out.print(str1);
+        System.out.print(str3);
+        System.out.println(str2);
         //System.out.println(str2 + str2 + str1); //would be shorter, but we need to use "print"
         System.out.print(str2);
         System.out.print(str3);

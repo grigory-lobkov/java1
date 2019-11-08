@@ -20,6 +20,7 @@ public class Task3 {
     public static void main(String[] args) {
         int a = 34, b = 55, c;
 
+        System.out.print("a = " + a + "\nb = " + b);
         System.out.println("a = " + a + "\nb = " + b);
 
         c = addition(a, b);

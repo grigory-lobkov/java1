@@ -13,7 +13,7 @@ public class Task2 {
     }
 
     public static void main(String[] args) {
-        subtraction(89,55);
+        subtraction(89, 55);
     }
 
 }
