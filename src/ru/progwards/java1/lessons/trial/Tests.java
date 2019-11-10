@@ -2,18 +2,23 @@ package ru.progwards.java1.lessons.trial;
 
 public class Tests {
 
-    public static void main(String[] args) {/*
-        Season s = new Season();
+    public static void main(String[] args) {
+        /*Season s = new Season();
         s.setLang(Season.Language.EN);
         for (int i = 0; i <= 13; i++)
-            System.out.println(i + " " + s.toString(i));
+            System.out.println(i + " " + s.toString(i));*/
 
         System.out.println(IsDate.check(31,10,2000));
         System.out.println(IsDate.check(29,2,2000));
         System.out.println(IsDate.check(30,2,2000));
         System.out.println(IsDate.check(29,2,2001));
+        System.out.println(IsDate.check(0,1,2019));
+        System.out.println(IsDate.check(1,0,2019));
+        System.out.println(IsDate.check(32,1,2019));
+        System.out.println(IsDate.check(1,13,2019));
+        System.out.println(IsDate.check(31,12,2019));
 
-        BArray b = new BArray<Integer>(10, 10);
+        /*BArray b = new BArray<Integer>(10, 10);
         for (int i = 0; i < 9; i++) b.add(i);
         b.print();
         b.insert(9, 10);
@@ -24,15 +29,15 @@ public class Tests {
         b.print();
         b.delete(10);
         b.print();*/
-        /*
-        System.out.println(wordGrade(0));
+
+        /*System.out.println(wordGrade(0));
         System.out.println(wordGrade(1));
         System.out.println(wordGrade(2));
         System.out.println(wordGrade(3));
         System.out.println(wordGrade(4));
         System.out.println(wordGrade(5));
-        System.out.println(wordGrade(6));
-         */
+        System.out.println(wordGrade(6));*/
+
         /*int[] a = new int[10];
         for (int i = 0; i < a.length; i++) a[i] = i;
         BArray.printInt(a);
