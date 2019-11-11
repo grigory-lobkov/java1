@@ -8,15 +8,15 @@ public class Tests {
         for (int i = 0; i <= 13; i++)
             System.out.println(i + " " + s.toString(i));*/
 
-        System.out.println(IsDate.check(31,10,2000));
-        System.out.println(IsDate.check(29,2,2000));
-        System.out.println(IsDate.check(30,2,2000));
-        System.out.println(IsDate.check(29,2,2001));
-        System.out.println(IsDate.check(0,1,2019));
-        System.out.println(IsDate.check(1,0,2019));
-        System.out.println(IsDate.check(32,1,2019));
-        System.out.println(IsDate.check(1,13,2019));
-        System.out.println(IsDate.check(31,12,2019));
+        System.out.println(IsDate.check2(31,10,2000));
+        System.out.println(IsDate.check2(29,2,2000));
+        System.out.println(IsDate.check2(30,2,2000));
+        System.out.println(IsDate.check2(29,2,2001));
+        System.out.println(IsDate.check2(0,1,2019));
+        System.out.println(IsDate.check2(1,0,2019));
+        System.out.println(IsDate.check2(32,1,2019));
+        System.out.println(IsDate.check2(1,13,2019));
+        System.out.println(IsDate.check2(31,12,2019));
 
         /*BArray b = new BArray<Integer>(10, 10);
         for (int i = 0; i < 9; i++) b.add(i);
