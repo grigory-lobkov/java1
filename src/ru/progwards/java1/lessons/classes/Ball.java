@@ -19,10 +19,10 @@ public class Ball extends Figure3D {
     @Override
     //объем шара по формуле Segment*Segment*Segment*пи*4/3
     public Number volume() {
-        Number pi = Number.newNumber(segment instanceof IntNumber ? "4" : "3.1415926535");
         return segment.div(segment.mul(segment.mul(segment.mul(
-                segment, segment.mul(segment, segment)), pi),
-                new Number("4")), new Number("3"));
+                segment, segment.mul(segment, segment)), // segment * segment * segment
+                Number.newNumber(segment instanceof IntNumber ? "4" : "3.1415926535")), // * pi
+                Number.newNumber("4")), Number.newNumber("3")); // * 4 / 3
     }
 
     //public Number getPi() { return pi; }
