@@ -24,7 +24,7 @@ public static boolean check(int day, int month, int year),
  */
     public static boolean check(int day, int month, int year) {
         return !((month==4 || month==6 || month==9 || month==11) && day > 30 ||
-                month == 2 && (day > 29 || day > 28 && year % 20 > 0) //feb
+                month == 2 && (day > 29 || day > 28 && year % 4 > 0) //feb
                 || day > 31 || day < 1 || month < 1 || month > 12);
     }
     public static boolean check2(int day, int month, int year) {
