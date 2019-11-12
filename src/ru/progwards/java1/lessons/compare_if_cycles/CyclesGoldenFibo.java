@@ -47,9 +47,9 @@ public class CyclesGoldenFibo {
 
         for (int a = 1; a <= 100; a++)
             for (int b = 1; b <= 100; b++)
-                for (int c = 1; c <= 100; c++)
-                    if (isGoldenTriangle(a, b, c))
-                        System.out.println("( " + a + ", " + b + ", " + c + " )");
+                //for (int c = 1; c <= 100; c++)
+                if (isGoldenTriangle(a, a, b))
+                    System.out.println("( " + a + ", " + a + ", " + b + " )");
     }
 }
 
