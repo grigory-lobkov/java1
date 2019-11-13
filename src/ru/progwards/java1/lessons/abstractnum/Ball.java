@@ -1,4 +1,4 @@
-package ru.progwards.java1.lessons.classes;
+package ru.progwards.java1.lessons.abstractnum;
 
 /*
 3.4 Реализовать класс Ball, переопределяющий метод
@@ -21,7 +21,7 @@ public class Ball extends Figure3D {
     public Number volume() {
         return segment.div(segment.mul(segment.mul(segment.mul(
                 segment, segment.mul(segment, segment)), // segment * segment * segment
-                Number.newNumber(segment instanceof IntNumber ? "4" : "3.1415926535")), // * pi
+                Number.newNumber(segment instanceof IntNumber ? "3" : "3.1415926535")), // * pi
                 Number.newNumber("4")), Number.newNumber("3")); // * 4 / 3
     }
     //ERROR: Тест "Класс Ball, метод volume()" не пройден. Метод volume()

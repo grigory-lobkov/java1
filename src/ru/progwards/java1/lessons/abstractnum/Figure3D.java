@@ -1,4 +1,4 @@
-package ru.progwards.java1.lessons.classes;
+package ru.progwards.java1.lessons.abstractnum;
 
 /*
 Реализовать классы Cube, Ball, вычисляющие объем фигуры в абстрактных числах класса Number,
