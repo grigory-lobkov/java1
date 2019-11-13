@@ -21,9 +21,11 @@ public class Ball extends Figure3D {
     public Number volume() {
         return segment.div(segment.mul(segment.mul(segment.mul(
                 segment, segment.mul(segment, segment)), // segment * segment * segment
-                Number.newNumber(segment instanceof IntNumber ? "4" : "3.1415926535")), // * pi
+                Number.newNumber(segment instanceof IntNumber ? "3" : "3.1415926535")), // * pi
                 Number.newNumber("4")), Number.newNumber("3")); // * 4 / 3
     }
+    //ERROR: Тест "Класс Ball, метод volume()" не пройден. Метод volume()
+    // возвращает неверное значение после создания экземпляра объекта с входным параметром типа IntNumber
 
     //public Number getPi() { return pi; }
     //public void setPi(Number pi) { this.pi = pi; }

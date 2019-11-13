@@ -55,6 +55,10 @@ public class Animal {
     Animal() {
     }
 
+    Animal(double weight) { // не нужный объект, когда не задан тип животного
+        this.weight = weight;
+    }
+
     Animal(AnimalKind animalKind, FoodKind food, double weight) {
         this.animalKind = animalKind;
         this.foodKind = food;

@@ -42,9 +42,12 @@ public class IntNumber extends Number {
     }
 
     // Этот метод невозможно переопределить с "int strNum"
-    /*@Override
-    public static Number newNumber(int strNum) {
-        return new Number("" + strNum);
-    }*/
+    // если не добавлять static, то невозможно будет обратиться через IntNumber.newNumber, и вернуть IntNumber
+    //@Override
+    public static IntNumber newNumber(String strNum) {
+        return (IntNumber) new Number(strNum);
+    }
+    //ERROR: Тест "Класс IntNumber, метод newNumber(String strNum)" не пройден.
+    //Метод newNumber(String strNum) не возвращает новый экземпляр класса IntNumber со значением параметра strNum, в виде строкового значения double
 
 }

@@ -31,4 +31,8 @@ public class DoubleNumber extends Number {
         return new DoubleNumber(Double.parseDouble(n1.toString()) / Double.parseDouble(n2.toString()));
     }
 
+    public static DoubleNumber newNumber(String strNum) {
+        return (DoubleNumber) new Number(strNum);
+    }
+
 }
