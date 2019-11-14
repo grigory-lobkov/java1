@@ -18,21 +18,22 @@ public Number newNumber(String strNum), который будет возвращ
 public class DoubleNumber extends Number {
 
     public DoubleNumber(double number) {
-        super("" + number);
+        super("" + number, NumType.DOUBLE);
+        //numType = NumType.DOUBLE;
     }
 
-    @Override
-    public Number mul(Number n1, Number n2) {
+    //@Override
+    public static Number mul(Number n1, Number n2) {
         return new DoubleNumber(Double.parseDouble(n1.toString()) * Double.parseDouble(n2.toString()));
     }
 
-    @Override
-    public Number div(Number n1, Number n2) {
+    //@Override
+    public static Number div(Number n1, Number n2) {
         return new DoubleNumber(Double.parseDouble(n1.toString()) / Double.parseDouble(n2.toString()));
     }
 
-    public static DoubleNumber newNumber(String strNum) {
-        return (DoubleNumber) new Number(strNum);
+    public static Number newNumber(String strNum) {
+        return Number.newNumber(strNum);
     }
 
 }

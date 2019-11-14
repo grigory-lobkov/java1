@@ -11,11 +11,20 @@ package ru.progwards.java1.lessons.abstractnum;
 */
 public class Number {
 
-    String strNum = null;
+    private String strNum = null;
+    enum NumType {INT, DOUBLE};
+    NumType numType = null;
 
     Number() {}
     Number(String strNum) {
+        this();
         this.strNum = strNum;
+        this.numType = getNumType(strNum);
+    }
+    Number(String strNum, NumType numType) {
+        this();
+        this.strNum = strNum;
+        this.numType = numType;
     }
 
     @Override
@@ -23,16 +32,52 @@ public class Number {
         return strNum;
     }
 
-    public Number mul(Number n1, Number n2) {
+    public static Number mul(Number n1, Number n2) {
+        //checkNumType(n1);
+        switch (n1.numType) {
+            case INT:
+                return IntNumber.mul(n1, n2);
+            case DOUBLE:
+                return DoubleNumber.mul(n1, n2);
+        }
         return null;
     }
 
-    public Number div(Number n1, Number n2) {
+    public static Number div(Number n1, Number n2) {
+        //checkNumType(n1);
+        switch (n1.numType) {
+            case INT:
+                return IntNumber.div(n1, n2);
+            case DOUBLE:
+                return DoubleNumber.div(n1, n2);
+        }
         return null;
     }
 
     public static Number newNumber(String strNum) {
-        return new Number(strNum);
+        //return new Number(strNum); //it's workable, but creates not IntNumber, DoubleNumber
+        Number n = null;
+        switch (getNumType(strNum)) {
+            case INT:
+                n = new IntNumber(Integer.parseInt(strNum));
+                break;
+            case DOUBLE:
+                n = new DoubleNumber(Double.parseDouble(strNum));
+                break;
+        }
+        return n;
+    }
+    public static void checkNumType(Number n) {
+        if (n.numType == null) n.numType = getNumType(n.strNum);
+    }
+    public static NumType getNumType(String strNum) {
+        try {
+            Integer.parseInt(strNum);
+            return NumType.INT;
+        } catch(NumberFormatException e) {
+            Double.parseDouble(strNum);
+            return NumType.DOUBLE;
+        }
     }
 
 }
