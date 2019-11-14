@@ -22,12 +22,23 @@ public class EgtsDirectionAndSpeed {
     }
 
     public static int getDirection(byte dirLow, short speedAndDir) {
-        return dirLow & 0b0111_1111 - (speedAndDir >> 15) * 128;
+        return (dirLow & 0b0111_1111) + (dirLow & 0b1000_0000) + ((speedAndDir >> 7) & 0b1_0000_0000);
     }
 
+/*
+OK: Тест "Тест на направление < 128 градусов" пройден успешно.
+ERROR: Тест "Тест на направление >= 128 и < 256 градусов" не пройден.
+Проверка getDirection() expected:<255> but was:<127>
+ERROR: Тест "Тест на направление >= 256 градусов" не пройден.
+Проверка getDirection() expected:<359> but was:<103>
+*/
     public static void main(String[] args) {
-        System.out.println(getSpeed((short)0b1000_0000_0000_0000));
-        System.out.println(getDirection((byte)0b1000_0000, (short)0b1000_0000_0000_0000));
+        System.out.println("2=" + getSpeed((short)0b1000_0000_0000_0010));
+        System.out.println("2=" + getDirection((byte)0b0000_0010, (short)0b0000_0000_0000_0000));
+        System.out.println("258=" + getDirection((byte)0b0000_0010, (short)0b1000_0000_0000_0000));
+        System.out.println("255=" + getDirection((byte)0b1111_1111, (short)0b0000_0000_0000_0000));
+        System.out.println("511=" + getDirection((byte)0b1111_1111, (short)0b1000_0000_0000_0000));
+        System.out.println("144=" + getDirection((byte)0b1001_0000, (short)0b0000_0000_0000_0000));
     }
 
 }
