@@ -54,6 +54,7 @@ public class Number {
         return null;
     }
 
+    // работает автоопределение типа!
     public static Number newNumber(String strNum) {
         //return new Number(strNum); //it's workable, but creates not IntNumber, DoubleNumber
         Number n = null;

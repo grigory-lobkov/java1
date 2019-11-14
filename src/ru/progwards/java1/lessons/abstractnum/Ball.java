@@ -22,7 +22,7 @@ public class Ball extends Figure3D {
         return segment.div(segment.mul(segment.mul(segment.mul(
                 segment, segment.mul(segment, segment)), // segment * segment * segment
                 //Number.newNumber(segment instanceof IntNumber ? "4" : "" + Math.PI)), // * pi
-                Number.newNumber(segment.numType == Number.NumType.INT ? "4" : "" + Math.PI)), // * pi
+                Number.newNumber(segment.numType == Number.NumType.INT ? "3" : "" + Math.PI)), // * pi
                 Number.newNumber("4")), Number.newNumber("3")); // * 4 / 3
     }
     //ERROR: Тест "Класс Ball, метод volume()" не пройден. Метод volume()
@@ -37,7 +37,7 @@ public class Ball extends Figure3D {
     }
 
     public static void main(String[] args) {
-        Number n = Number.newNumber("123");
+        Number n = Number.newNumber("3");
         Figure3D figure = new Ball(n);
         System.out.println(figure);
         n = Number.newNumber("1.5");

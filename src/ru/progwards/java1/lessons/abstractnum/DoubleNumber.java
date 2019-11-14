@@ -33,7 +33,7 @@ public class DoubleNumber extends Number {
     }
 
     public static Number newNumber(String strNum) {
-        return Number.newNumber(strNum);
+        return new DoubleNumber(Double.parseDouble(strNum));
     }
 
 }
