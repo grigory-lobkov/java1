@@ -17,6 +17,8 @@ public Number newNumber(String strNum), который будет возвращ
 
 public class IntNumber extends Number {
 
+    public IntNumber() {}
+
     public IntNumber(int number) {
         super("" + number, NumType.INT);
         //numType = NumType.INT;
@@ -46,13 +48,17 @@ public class IntNumber extends Number {
     // если не добавлять static, то невозможно будет обратиться через IntNumber.newNumber, и вернуть IntNumber
     //@Override
     public static IntNumber newNumber(String strNum) {
-        try {
+        /*try {
             int i = Integer.parseInt(strNum);
             return new IntNumber(i);
         } catch(NumberFormatException e) {
             double d = Double.parseDouble(strNum);
             return new IntNumber((int)d);
-        }
+        }*/
+        IntNumber d = new IntNumber();
+        d.strNum = strNum;
+        d.numType = getNumType(strNum);
+        return d;
     }
     //ERROR: Тест "Класс IntNumber, метод newNumber(String strNum)" не пройден.
     //Метод newNumber(String strNum) не возвращает новый экземпляр класса IntNumber со значением параметра strNum, в виде строкового значения double

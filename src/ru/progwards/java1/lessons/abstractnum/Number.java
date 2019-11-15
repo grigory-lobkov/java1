@@ -11,7 +11,7 @@ package ru.progwards.java1.lessons.abstractnum;
 */
 public class Number {
 
-    private String strNum = null;
+    String strNum = null;
     enum NumType {INT, DOUBLE};
     NumType numType = null;
 

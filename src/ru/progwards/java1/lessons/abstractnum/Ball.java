@@ -46,6 +46,10 @@ public class Ball extends Figure3D {
         n = Number.newNumber("1.0");
         figure = new Cube(n);
         System.out.println(figure);
+        n = IntNumber.newNumber("1.5");
+        System.out.println(n);
+        n = DoubleNumber.newNumber("125");
+        System.out.println(n);
     }
 
 }

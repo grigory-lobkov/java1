@@ -17,6 +17,8 @@ public Number newNumber(String strNum), который будет возвращ
 
 public class DoubleNumber extends Number {
 
+    public DoubleNumber() {}
+
     public DoubleNumber(double number) {
         super("" + number, NumType.DOUBLE);
         //numType = NumType.DOUBLE;
@@ -32,8 +34,12 @@ public class DoubleNumber extends Number {
         return new DoubleNumber(Double.parseDouble(n1.toString()) / Double.parseDouble(n2.toString()));
     }
 
-    public static Number newNumber(String strNum) {
-        return new DoubleNumber(Double.parseDouble(strNum));
+    public static DoubleNumber newNumber(String strNum) {
+        //return new DoubleNumber(Double.parseDouble(strNum));
+        DoubleNumber d = new DoubleNumber();
+        d.strNum = strNum;
+        d.numType = getNumType(strNum);
+        return d;
     }
 
 }
