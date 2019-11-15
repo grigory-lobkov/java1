@@ -22,7 +22,7 @@ public class EgtsDirectionAndSpeed {
     }
 
     public static int getDirection(byte dirLow, short speedAndDir) {
-        return (dirLow & 0b1111_1111) + (speedAndDir >> 7 & 0b1_0000_0000);
+        return (dirLow & 0b1111_1111) + (speedAndDir >>> 7 & 0b1_0000_0000);
     }
 
 /*

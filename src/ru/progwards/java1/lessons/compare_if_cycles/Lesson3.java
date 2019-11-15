@@ -1,6 +1,6 @@
 package ru.progwards.java1.lessons.compare_if_cycles;
 
-public class Lesson {
+public class Lesson3 {
 
     static int addAsStrings(int n1, int n2) {
         return Integer.parseInt((((Integer)n1).toString().concat(((Integer)n2).toString())));
@@ -10,6 +10,7 @@ public class Lesson {
         //System.out.println(addAsStrings(12, 34));
         //System.out.println(textGrade(45));
         System.out.println(factorial(3));
+        System.out.println((int)765.567);
     }
 
 /*    0 - не оценено

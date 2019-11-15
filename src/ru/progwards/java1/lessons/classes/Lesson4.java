@@ -1,6 +1,6 @@
 package ru.progwards.java1.lessons.classes;
 
-public class Lesson {
+public class Lesson4 {
 
     public static void main(String[] args) {
         Person p = new Person("Tom", 16);

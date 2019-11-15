@@ -1,6 +1,6 @@
 package ru.progwards.java1.lessons.helloworld;
 
-public class Lesson {
+public class Lesson1 {
 
     static void helloWorld() {
         String str; // объявление
@@ -20,8 +20,8 @@ public class Lesson {
 
     public static void main(String[] args) {
         helloWorld();
-        Lesson.helloWorld();
-        ru.progwards.java1.lessons.helloworld.Lesson.helloWorld();
+        Lesson1.helloWorld();
+        Lesson1.helloWorld();
         println("Привет, Мир!");
         println("Как дела?");
         System.out.print("Я знаю, сколько будет 5 + 7 = ");

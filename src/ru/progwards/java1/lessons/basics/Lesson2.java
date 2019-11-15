@@ -1,6 +1,6 @@
 package ru.progwards.java1.lessons.basics;
 
-public class Lesson {
+public class Lesson2 {
 
     static double fractional(double num) {
         return num % 1;
@@ -20,4 +20,8 @@ public class Lesson {
         System.out.println(fractional(0.32));
         System.out.println(fractional(2.32));
     }
+/*    public static void main(String[] args) {
+        System.out.println(fractional(0.32)); // должно вывести "0.32"
+        System.out.println(fractional(2.32)); // должно вывести "0.32"
+    }*/
 }
