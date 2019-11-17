@@ -22,13 +22,13 @@ public class ByteRegister {
 
     public ByteRegister() {
         bits = new Bit[size];
-    }
-
-    public ByteRegister(byte value) {
-        bits = new Bit[size];
         for (int i = 0; i < size; i++) {
             bits[i] = new Bit();
         }
+    }
+
+    public ByteRegister(byte value) {
+        this();
         set(value);
     }
 
@@ -65,7 +65,9 @@ public class ByteRegister {
 
     // tests
     public static void main(String[] args) {
-        ByteRegister r = new ByteRegister((byte)0b1001_0001);
+        ByteRegister r = new ByteRegister();
+        r.print();
+        r = new ByteRegister((byte)0b1001_0001);
         r.print();
         r.set((byte)0b1111_1111);
         r.print();

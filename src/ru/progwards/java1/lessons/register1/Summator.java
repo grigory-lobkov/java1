@@ -16,9 +16,12 @@ public class Summator {
     public static boolean add(ByteRegister value1, ByteRegister value2) {
         boolean pr = false; // бит переноса с предыдущего регистра
         boolean nv; // новое значение бита для value1
+        boolean b1, b2;
         for(int i = 0; i < value1.size; i++) {
-            nv = value1.bits[i].get() ^ value2.bits[i].get() ^ pr;
-            pr = value1.bits[i].get() && value2.bits[i].get() || value1.bits[i].get() && pr || value2.bits[i].get() && pr;
+            b1 = value1.bits[i].get();
+            b2 = value2.bits[i].get();
+            nv = b1 ^ b2 ^ pr;
+            pr = b1 && b2 || b1 && pr || b2 && pr;
             value1.bits[i].set(nv);
         }
         return !pr;
