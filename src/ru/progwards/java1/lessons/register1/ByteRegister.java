@@ -17,19 +17,31 @@ public String toDecString() - вывод в десятичной системе 
 
 public class ByteRegister {
 
-    Bit[] bits;
-    final int size = 8; // количество бит
+    public Bit[] bits;
+    public int size = 8; // количество бит
+    protected boolean signed = false; // знаковое ли число
+    protected enum NegStoreType {STRIGHT, FORWARD, ADDITIONAL}
+    protected NegStoreType negStoreType = NegStoreType.STRIGHT;
 
     public ByteRegister() {
-        bits = new Bit[size];
-        for (int i = 0; i < size; i++) {
-            bits[i] = new Bit();
-        }
+        init();
     }
 
     public ByteRegister(byte value) {
         this();
         set(value);
+    }
+
+    public ByteRegister(ByteRegister value) {
+        this();
+        set(value);
+    }
+
+    protected void init() {
+        bits = new Bit[size];
+        for (int i = 0; i < size; i++) {
+            bits[i] = new Bit();
+        }
     }
 
     public void set(byte value) {
@@ -42,6 +54,17 @@ public class ByteRegister {
         }
     }
 
+    public void set(ByteRegister value) {
+        boolean differ = size != value.size;
+        size = value.size;
+        signed = value.signed;
+        negStoreType = value.negStoreType;
+        if (differ) init();
+        for (int i = 0; i < size; i++) {
+            bits[i].set(value.bits[i].get());
+        }
+    }
+
     // вывод в двоичном виде
     public String toString() {
         String r = "";
@@ -51,16 +74,40 @@ public class ByteRegister {
 
     // вывод в десятичной системе счисления
     public String toDecString() {
-        int sum = 0, a = 1;
-        for (Bit b : bits) {
+        int sum, a = 1, last;
+        boolean lastBitVal = false; // инициализация не нужна, но как её избежать - не знаю :( компилятор не пропускает с ошибкой
+        /*for (Bit b : bits) {
             if (b.get()) sum += a;
             a <<= 1;
+        }*/
+        if (signed) {
+            last = size - 1;
+            lastBitVal = bits[last].get();
+            if (negStoreType == NegStoreType.ADDITIONAL && lastBitVal) {
+                // отрицательное число в дополнительной форме записи
+                sum = -1;
+                for (int i = 0; i < last; i++) {
+                    if (!bits[i].get()) sum -= a;
+                    a <<= 1;
+                }
+                return Integer.toString(sum);
+            }
+        } else {
+            last = size;
+        }
+        sum = 0;
+        for (int i = 0; i < last; i++) {
+            if (bits[i].get()) sum += a;
+            a <<= 1;
+        }
+        if (signed && lastBitVal) {
+                sum *= -1;
         }
         return Integer.toString(sum);
     }
 
     public void print() {
-        System.out.println("0b" + this.toString() + " = (int)" + Integer.parseInt(this.toString(), 2) + " = (dec)" + this.toDecString());
+        System.out.println("0b" + this.toString() + " = (int)" + Integer.parseInt(this.toString()) + " = (dec)" + this.toDecString());
     }
 
     // tests
