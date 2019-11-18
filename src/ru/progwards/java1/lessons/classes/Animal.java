@@ -50,7 +50,7 @@ public class Animal {
     private FoodKind foodKind = FoodKind.UNKNOWN;
 
     private double weight = 1d; // вес животного
-    private double foodCoeff = 0.02; // коэффициент веса еды к весу тела животного
+    double foodCoeff = 0.02; // коэффициент веса еды к весу тела животного
 
     Animal() {
     }
@@ -59,10 +59,11 @@ public class Animal {
         this.weight = weight;
     }
 
-    Animal(AnimalKind animalKind, FoodKind food, double weight) {
+    Animal(AnimalKind animalKind, FoodKind food, double weight, double foodCoeff) {
         this.animalKind = animalKind;
         this.foodKind = food;
         this.weight = weight;
+        this.foodCoeff = foodCoeff;
     }
 
     public AnimalKind getKind() {

@@ -7,13 +7,14 @@ package ru.progwards.java1.lessons.classes;
 */
 public class Duck extends Animal {
 
+    static double foodCoeff = 0.04;
+
     Duck() {
-        super(AnimalKind.DUCK, FoodKind.CORN, 0d);
+        super(AnimalKind.DUCK, FoodKind.CORN, 0d, foodCoeff);
     }
 
     Duck(double weight) {
-        super(AnimalKind.DUCK, FoodKind.CORN, weight);
-        setFoodCoeff(0.04);
+        super(AnimalKind.DUCK, FoodKind.CORN, weight, foodCoeff);
     }
 
     public static void main(String[] args) {
