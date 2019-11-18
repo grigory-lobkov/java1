@@ -1,7 +1,4 @@
 package ru.progwards.java1.lessons.register2;
-import ru.progwards.java1.lessons.register1.ByteRegister;
-import ru.progwards.java1.lessons.register1.Counter;
-import ru.progwards.java1.lessons.register1.Summator;
 
 /*
 Реализовать класс, IntRegister, содержащий 32 бит, реализованных на классе Bit, методы:
