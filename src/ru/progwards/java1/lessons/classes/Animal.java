@@ -75,7 +75,7 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "I am " + getKind() + ", eat " + getFoodKind() + " " + CalculateFoodWeight();
+        return "I am " + getKind() + ", eat " + getFoodKind() + " " + calculateFoodWeight();
     }
 
     public double getWeight() {
@@ -90,7 +90,7 @@ public class Animal {
     }
 
     // рассчитывает необходимый вес еды, по формуле - вес-еды = вес-животного * коэффициент веса тела
-    public double CalculateFoodWeight() {
+    public double calculateFoodWeight() {
         return getWeight() * getFoodCoeff();
     }
 
