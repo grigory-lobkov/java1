@@ -88,6 +88,9 @@ public class Animal {
     public double getFoodCoeff() {
         return foodCoeff;
     }
+    public double getCoeff() {
+        return foodCoeff;
+    }
 
     // рассчитывает необходимый вес еды, по формуле - вес-еды = вес-животного * коэффициент веса тела
     public double calculateFoodWeight() {
