@@ -32,10 +32,15 @@ public class AbsInteger {
     protected int toInt() {
         return 0;
     }
+
+    public static void main(String[] args) {
+        AbsInteger num1 = new ByteInteger((byte)10);
+        AbsInteger num2 = new ShortInteger((short)1314);
+        System.out.println(AbsInteger.add(num1, num2));
+    }
 }
 
 class ByteInteger extends AbsInteger {
-    private int bytes;
     byte value;
     ByteInteger(byte value) {
         this.value = value;
@@ -64,7 +69,6 @@ class ByteInteger extends AbsInteger {
 }
 
 class ShortInteger extends AbsInteger {
-    private int bytes;
     short value;
     ShortInteger(short value) {
         this.value = value;
@@ -89,7 +93,6 @@ class ShortInteger extends AbsInteger {
 }
 
 class IntInteger extends AbsInteger {
-    private int bytes;
     int value;
     IntInteger(int value) {
         this.value = value;

@@ -25,13 +25,17 @@ public class ArrayInteger {
     int signif; // сколько цифр в даное время значимых
 
     ArrayInteger() {
-        int n = 255;
+        int n = 10;
         digits = new byte[n];
         clear(n);
     }
     ArrayInteger(int n) {
         digits = new byte[n];
         clear(n);
+    }
+    ArrayInteger(String value) {
+        this();
+        fromString(value);
     }
     private void clear() {
         clear(signif);
@@ -40,8 +44,8 @@ public class ArrayInteger {
         for (int i = 0; i < count; i++) digits[i] = 0;
         signif = 0;
     }
-    void fromInt(BigDecimal value) {
-        char[] s = value.toString().toCharArray();
+    void fromString(String value) {
+        char[] s = value.toCharArray();
         int sig = s.length;
         // переведем массив к числовому
         for (int i = sig - 1, k = 0; i >= 0; i--, k++) {
@@ -52,6 +56,9 @@ public class ArrayInteger {
             digits[i] = 0;
         }
         signif = sig;
+    }
+    void fromInt(BigDecimal value) {
+        fromString(value.toString());
     }
     BigDecimal toInt() {
         char[] s = new char[signif];
@@ -65,10 +72,6 @@ public class ArrayInteger {
         clear(digits.length);
         return false;
     }
-    /*
-    3.4 boolean add(ArrayInteger num) - сложить 2 числа, не используя BigInteger, а  используя массив digits,
-    результат поместить в экземпляр ArrayInteger, у которого был вызван метод. При переполнении вернуть false,
-    при этом само число сбросить в 0*/
     boolean add(ArrayInteger num) {
         int sigMax = num.signif >= signif ? num.signif : signif; // max significant
         int l = digits.length;
@@ -78,7 +81,7 @@ public class ArrayInteger {
         int sig = 0; // ИНДЕКС последнего значащего
         for (int i = 0; i <= sigMax; i++) {
             r = p;
-            if (i < l) r += num.digits[i];
+            if (i < l) r += digits[i];
             if (i < ln) r += num.digits[i];
             if (r > 0) {
                 sig = i;
@@ -89,12 +92,24 @@ public class ArrayInteger {
             }
             p = r / 10;
         }
-        /*if (p > 0) { // коммент, т.к. в цикл добавил доп. проход
-            sig = sigMax;
-            if (sig >= l) return raiseCalcError();
-            digits[sig] = (byte) p;
-        }*/
         signif = sig + 1;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        byte[] r = new byte [signif];
+        for (int i = signif - 1, k = 0; i >= 0; i--, k++) {
+            r[k] = (byte) (digits[i] + '0');
+        }
+        return new String(r);
+    }
+
+    public static void main(String[] args) {
+        ArrayInteger a = new ArrayInteger("999");
+        ArrayInteger b = new ArrayInteger("99");
+        System.out.print(a + " + " + b + " = ");
+        a.add(b);
+        System.out.println(a);
     }
 }
