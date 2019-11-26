@@ -133,8 +133,7 @@ public class Animal implements FoodCompare, Comparable {
     @Override
     public int compareTo(Object o) {
         if (o == this) return 0;
-        //if (o == null || o.getClass() != this.getClass()) return -2;
-        if (o == null) return -2;
+        if (!(o instanceof Animal)) throw new RuntimeException("Object o is not inherited from Animal class.");
         double w = this.getWeight();
         double wo = ((Animal) o).getWeight();
         if (w == wo) return 0;
