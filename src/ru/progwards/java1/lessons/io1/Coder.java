@@ -48,7 +48,7 @@ public class Coder {
             FileWriter fEOut = null;
             BufferedWriter bEOut = null;
             try {
-                fEOut = new FileWriter(inFileName, true);
+                fEOut = new FileWriter(logName, true);
                 bEOut = new BufferedWriter(fEOut);
                 bEOut.write("New Line!");
             } catch (IOException e2) {
