@@ -50,7 +50,7 @@ public class Coder {
             try {
                 fEOut = new FileWriter(logName, true);
                 bEOut = new BufferedWriter(fEOut);
-                bEOut.write("New Line!");
+                bEOut.write(e.getMessage());
             } catch (IOException e2) {
             } finally {
                 try {
@@ -74,7 +74,7 @@ public class Coder {
         char[] code = new char[256];
         //for (int i = 0; i < 256; i++) code[i] = (char)i;
         for (int i = 0; i < 256; i++) code[i] = (char) (Character.isDigit((char) i) ? i + 1 : i);
-        codeFile("src\\ru\\progwards\\java1\\lessons\\io1\\Coder.java",
+        codeFile("src\\ru\\progwards\\java1\\lessons\\io1\\Coder1.java",
                 "src\\ru\\progwards\\java1\\lessons\\io1\\Coder.txt",
                 code,
                 "src\\ru\\progwards\\java1\\lessons\\io1\\Coder.log");
