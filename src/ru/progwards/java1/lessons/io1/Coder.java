@@ -1,8 +1,5 @@
 package ru.progwards.java1.lessons.io1;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 /*
@@ -17,15 +14,36 @@ public static void codeFile(String inFileName, String outFileName, char[] code, 
 */
 
 public class Coder {
-    public static void codeFile(String inFileName, String outFileName, char[] code, String logName){
-        try (FileInputStream fIn = new FileInputStream(inFileName); FileInputStream fOut = new FileInputStream(inFileName);) {
-            while (fIn.) { //https://javarush.ru/groups/posts/2020-vvod-vihvod-v-java-klassih-fileinputstream-fileoutputstream-bufferedinputstream
-                String str = s.nextLine();
+
+    public static void codeFile1(String inFileName, String outFileName, char[] code, String logName) {
+        try (
+                FileInputStream fIn = new FileInputStream(inFileName);
+                BufferedInputStream bIn = new BufferedInputStream(fIn);
+                FileOutputStream fOut = new FileOutputStream(inFileName);
+                BufferedOutputStream bOut = new BufferedOutputStream(fOut);
+        ) {
+            int i;
+            while ((i = bIn.read()) != -1) {
+                bOut.write(code[i]);
             }
-        } catch (FileNotFoundException e) {
-
         } catch (IOException e) {
-
+            System.out.println(e.getMessage());
         }
     }
+
+    public static void codeFile(String inFileName, String outFileName, char[] code, String logName) {
+        try {
+            FileInputStream fIn = new FileInputStream(inFileName);
+            BufferedInputStream bIn = new BufferedInputStream(fIn);
+            FileOutputStream fOut = new FileOutputStream(inFileName);
+            BufferedOutputStream bOut = new BufferedOutputStream(fOut);
+            int i;
+            while ((i = bIn.read()) != -1) {
+                bOut.write(code[i]);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
