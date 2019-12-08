@@ -1,6 +1,5 @@
 package ru.progwards.java1.lessons.io1;
 import java.io.*;
-import java.util.Scanner;
 
 /*
 Создать статический метод
@@ -32,18 +31,53 @@ public class Coder {
     }
 
     public static void codeFile(String inFileName, String outFileName, char[] code, String logName) {
+        FileInputStream fIn = null;
+        BufferedInputStream bIn = null;
+        FileOutputStream fOut = null;
+        BufferedOutputStream bOut = null;
         try {
-            FileInputStream fIn = new FileInputStream(inFileName);
-            BufferedInputStream bIn = new BufferedInputStream(fIn);
-            FileOutputStream fOut = new FileOutputStream(inFileName);
-            BufferedOutputStream bOut = new BufferedOutputStream(fOut);
+            fIn = new FileInputStream(inFileName);
+            bIn = new BufferedInputStream(fIn);
+            fOut = new FileOutputStream(outFileName);
+            bOut = new BufferedOutputStream(fOut);
             int i;
             while ((i = bIn.read()) != -1) {
                 bOut.write(code[i]);
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            FileWriter fEOut = null;
+            BufferedWriter bEOut = null;
+            try {
+                fEOut = new FileWriter(inFileName, true);
+                bEOut = new BufferedWriter(fEOut);
+                bEOut.write("New Line!");
+            } catch (IOException e2) {
+            } finally {
+                try {
+                    if (bEOut != null) bEOut.close();
+                    if (fEOut != null) fEOut.close();
+                } catch (IOException e3) {
+                }
+            }
+        } finally {
+            try {
+                if (bOut != null) bOut.close();
+                if (fOut != null) fOut.close();
+                if (bIn != null) bIn.close();
+                if (fIn != null) fIn.close();
+            } catch (IOException e) {
+            }
         }
+    }
+
+    public static void main(String[] args) {
+        char[] code = new char[256];
+        //for (int i = 0; i < 256; i++) code[i] = (char)i;
+        for (int i = 0; i < 256; i++) code[i] = (char) (Character.isDigit((char) i) ? i + 1 : i);
+        codeFile("src\\ru\\progwards\\java1\\lessons\\io1\\Coder.java",
+                "src\\ru\\progwards\\java1\\lessons\\io1\\Coder.txt",
+                code,
+                "src\\ru\\progwards\\java1\\lessons\\io1\\Coder.log");
     }
 
 }
