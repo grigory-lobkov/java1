@@ -25,7 +25,7 @@ public class Coder {
             while ((i = bIn.read()) != -1) {
                 bOut.write(code[i]);
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             System.out.println(e.getMessage());
         }
     }
