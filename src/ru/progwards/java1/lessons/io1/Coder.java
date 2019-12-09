@@ -25,7 +25,7 @@ public class Coder {
             while ((i = bIn.read()) != -1) {
                 bOut.write(code[i]);
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println(e.getMessage());
         }
     }
@@ -44,19 +44,19 @@ public class Coder {
             while ((i = bIn.read()) != -1) {
                 bOut.write(code[i]);
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             FileWriter fEOut = null;
             BufferedWriter bEOut = null;
             try {
                 fEOut = new FileWriter(logName, true);
                 bEOut = new BufferedWriter(fEOut);
                 bEOut.write(e.getMessage());
-            } catch (IOException e2) {
+            } catch (Throwable e2) {
             } finally {
                 try {
                     if (bEOut != null) bEOut.close();
                     if (fEOut != null) fEOut.close();
-                } catch (IOException e3) {
+                } catch (Throwable e3) {
                 }
             }
         } finally {
@@ -65,7 +65,7 @@ public class Coder {
                 if (fOut != null) fOut.close();
                 if (bIn != null) bIn.close();
                 if (fIn != null) fIn.close();
-            } catch (IOException e) {
+            } catch (Throwable e) {
             }
         }
     }
