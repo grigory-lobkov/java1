@@ -1,9 +1,15 @@
 package ru.progwards.java1.lessons.io2;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Censor {
+    public static String repeatStr(String value, int count) {
+        StringBuilder s = new StringBuilder(count);
+        for (int i=count; i>0; i--) s.append(value);
+        return s.toString();
+    }
 /*
 Создать статический метод public static void censorFile(String inoutFileName, String[] obscene),
 в котором прочитать файл inoutFileName и заменить слова, содержащиеся в String[] obscene на '*',
@@ -39,10 +45,10 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
 
     public static void censorFile(String inoutFileName, String[] obscene) {
         int obLen = obscene.length;
-        String star = "*";
         String[] stars = new String[obLen];
         for (int i = 0; i < obLen; i++) {
-            stars[i] = star.repeat(obscene[i].length());
+            //stars[i] = "*".repeat(obscene[i].length());
+            stars[i] = repeatStr("*", obscene[i].length());
         }
         //System.out.println(Arrays.toString(obscene));
         //System.out.println(Arrays.toString(stars));
