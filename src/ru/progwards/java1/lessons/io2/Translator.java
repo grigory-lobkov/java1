@@ -46,8 +46,9 @@ public class Translator {
 
     public String translateWord(String word) {
         String result = wordTable.get(word.toLowerCase());
+        if (result == null) return word;
         if (Character.isUpperCase(word.charAt(0))) {
-            return Character.toUpperCase(word.charAt(0)) + (word.length() > 1 ? word.substring(1) : "");
+            return Character.toUpperCase(result.charAt(0)) + (result.length() > 1 ? result.substring(1) : "");
         }
         return result;
     }
@@ -55,8 +56,9 @@ public class Translator {
     public String translate(String sentence) {
         StringBuilder result = new StringBuilder(128);
         int wordBeginIndex = -1;
+        int len = sentence.length();
 
-        for(int i = 0, len = sentence.length(); i < len; i++) {
+        for(int i = 0; i < len; i++) {
             char c = sentence.charAt(i);
             if (Character.isLetter(c)) {
                 if (wordBeginIndex < 0) wordBeginIndex = i;
@@ -78,6 +80,6 @@ public class Translator {
         String[] inLang = {"привет", "мир", "как", "твои", "дела"};
         String[] outLang = {"hello", "world", "how", "your", "deals"};
         Translator t = new Translator(inLang, outLang);
-        System.out.println(t.translate("Привет, Мир!"));
+        System.out.println(t.translate("привет, Мир!"));
     }
 }
