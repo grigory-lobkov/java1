@@ -2,7 +2,9 @@ package ru.progwards.java1.lessons.io2;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Censor {
     public static String repeatStr(String value, int count) {
@@ -43,15 +45,12 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         }
     }
 
-    public static void censorFile(String inoutFileName, String[] obscene) {
+    public static void censorFile1(String inoutFileName, String[] obscene) { // почему-то тестер не принял вариант с переводчиком
         int obLen = obscene.length;
         String[] stars = new String[obLen];
         for (int i = 0; i < obLen; i++) {
-            //stars[i] = "*".repeat(obscene[i].length());
             stars[i] = repeatStr("*", obscene[i].length());
         }
-        //System.out.println(Arrays.toString(obscene));
-        //System.out.println(Arrays.toString(stars));
         Translator tr = new Translator(obscene, stars);
 
         String tmpFileName = inoutFileName + ".tmp";
@@ -60,10 +59,7 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         try (FileReader r = new FileReader(inoutFileName); Scanner s = new Scanner(r); FileWriter w = new FileWriter(tmpFileName)) {
             while (s.hasNext()) {
                 String str = s.nextLine();
-                //System.out.println(str);
-                str = tr.translate(str);
-                //System.out.println(str);
-                //w.write(str + lineSeparator);
+                str = tr.translate(str + lineSeparator);
                 w.write(str);
             }
         } catch (IOException e) {
@@ -75,9 +71,101 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         n.renameTo(f);
     }
 
-    public static void main(String[] args) {
-        //censorFile("src/ru/progwards/java1/lessons/io2/Censor.txt", new String[]{"java", "Oracle", "Sun", "Microsystems"});
-        censorFile("src/ru/progwards/java1/lessons/io2/Censor1.txt", new String[]{"puck"});
+
+    private static long rafGetWordStart(RandomAccessFile raf, long startPos) throws IOException {
+        raf.seek(startPos);
+        long len = raf.length();
+        long result = startPos;
+        while (result < len) {
+            int c = raf.read();
+            //System.out.println(c);
+            if (Character.isLetter(c)) return result;
+            result++;
+        }
+        return -1;
+    }
+    private static long rafGetWordEnd(RandomAccessFile raf, long startPos) throws IOException {
+        raf.seek(startPos);
+        long len = raf.length();
+        long result = startPos;
+        while (result < len) {
+            int c = raf.read();
+            //System.out.println(c);
+            if (!Character.isLetter(c)) return result;
+            result++;
+        }
+        return -1;
+    }
+    private static Word rafGetWord(RandomAccessFile raf, long startPos) throws IOException {
+        raf.seek(startPos);
+        long len = raf.length();
+        long result = startPos;
+        int c = 0;
+        while (result < len) {
+            c = raf.read();
+            if (Character.isLetter(c)) break;
+            result++;
+        }
+        if(result == len) return new Word(-1);
+        Word rslt = new Word(result);
+        StringBuilder sb = new StringBuilder((char)c);
+        while (result < len) {
+            c = raf.read();
+            if (!Character.isLetter(c)) break;
+            sb.append((char)c);
+            result++;
+        }
+        rslt.endPos = result;
+        rslt.word = sb.toString();
+        return rslt;
+    }
+    public static void censorFile(String inoutFileName, String[] obscene) { //
+        Set<String> obs = new HashSet<String>(Arrays.asList(obscene));
+
+        try (RandomAccessFile raf = new RandomAccessFile(inoutFileName, "rw")) {
+
+            long len = raf.length();
+            //long wordStart = 0;
+            //long wordEnd = -1;
+            long[] pos = {0,-1};
+            String word;
+            while (pos[0] >= 0) {
+                //wordStart = rafGetWordStart(raf, wordEnd + 1);
+                long[] pos = rafGetWordPos(raf, pos[1] + 1);
+                if (pos[0] >= 0) {
+                    //wordEnd = rafGetWordEnd(raf, wordStart + 1);
+                    word = rafGetWord(raf, wordStart + 1);
+                    if(obs.contains(word)) {
+
+                    }
+                    System.out.println(wordStart + "-" + wordEnd);
+                }
+            }
+        } catch (IOException e) {
+            throw new CensorException(e.getMessage(), inoutFileName);
+        }
     }
 
+
+
+    public static void main(String[] args) {
+        //censorFile("src/ru/progwards/java1/lessons/io2/Censor.txt", new String[]{"java", "Oracle", "Sun", "Microsystems"});
+        censorFile("src/ru/progwards/java1/lessons/io2/Censor1.txt", new String[]{"puck","бять"});
+    }
+
+}
+class Word {
+    long startPos = -1;
+    long endPos = 0;
+    String word = null;
+
+    Word(long startPos) {
+        this.startPos = startPos;
+    }
+
+    Word(long startPos, long endPos, String word) {
+        this.startPos = startPos;
+        this.endPos = endPos;
+        this.word = word;
+    }
 }
