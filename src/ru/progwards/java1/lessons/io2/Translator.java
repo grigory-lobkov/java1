@@ -77,9 +77,12 @@ public class Translator {
     }
 
     public static void main(String[] args) {
-        String[] inLang = {"привет", "мир", "как", "твои", "дела"};
+        /*String[] inLang = {"привет", "мир", "как", "твои", "дела"};
         String[] outLang = {"hello", "world", "how", "your", "deals"};
         Translator t = new Translator(inLang, outLang);
-        System.out.println(t.translate("привет, Мир!"));
+        System.out.println(t.translate("привет, Мир!"));*/
+
+        Translator t = new Translator(new String[]{"puck"}, new String[]{"****"});
+        System.out.println(t.translate("What the puck are you shooting?"));
     }
 }

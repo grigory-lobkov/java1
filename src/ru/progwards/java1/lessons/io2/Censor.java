@@ -60,10 +60,11 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         try (FileReader r = new FileReader(inoutFileName); Scanner s = new Scanner(r); FileWriter w = new FileWriter(tmpFileName)) {
             while (s.hasNext()) {
                 String str = s.nextLine();
-                System.out.println(str);
+                //System.out.println(str);
                 str = tr.translate(str);
-                System.out.println(str);
-                w.write(str + lineSeparator);
+                //System.out.println(str);
+                //w.write(str + lineSeparator);
+                w.write(str);
             }
         } catch (IOException e) {
             throw new CensorException(e.getMessage(), inoutFileName);
@@ -75,7 +76,8 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
     }
 
     public static void main(String[] args) {
-        censorFile("src/ru/progwards/java1/lessons/io2/Censor.txt", new String[]{"java", "Oracle", "Sun", "Microsystems"});
+        //censorFile("src/ru/progwards/java1/lessons/io2/Censor.txt", new String[]{"java", "Oracle", "Sun", "Microsystems"});
+        censorFile("src/ru/progwards/java1/lessons/io2/Censor1.txt", new String[]{"puck"});
     }
 
 }

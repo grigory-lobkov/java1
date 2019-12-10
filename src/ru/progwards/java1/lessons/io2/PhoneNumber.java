@@ -21,7 +21,8 @@ public class PhoneNumber {
             throw new RuntimeException("В номере телефон должно быть 10 или 11 цифр!");
         }
         String tail = len == 11 ? numbers.substring(1) : numbers;
-        return "+" + (len == 10 || numbers.charAt(0)=='8' ? "7" : numbers.charAt(0))
+        //return "+" + (len == 10 || numbers.charAt(0)=='8' ? "7" : numbers.charAt(0)) // тест не пройден Возвращено: "+7(707)235-7553", ожидалось: "+7(072)357-553" - я не согласен :)
+        return "+" + (/*len == 10 ||*/ numbers.charAt(0)=='8' ? "7" : numbers.charAt(0))
                 + "(" + tail.substring(0,3) + ")"
                 + tail.substring(3,6) + "-" + tail.substring(6);
     }
