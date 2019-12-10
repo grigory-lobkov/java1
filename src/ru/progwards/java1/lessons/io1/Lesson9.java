@@ -1,9 +1,6 @@
 package ru.progwards.java1.lessons.io1;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Lesson9 {
@@ -24,7 +21,7 @@ public class Lesson9 {
         //test(0);
 
         try {
-            System.out.println(new Lesson9().lineCount("java1.iml"));
+            System.out.println(new Lesson9().lineCount("java12.iml"));
         } catch (Throwable t) {
             System.out.println(t);
         }
@@ -33,7 +30,7 @@ public class Lesson9 {
     public static String test (String filename) throws IOException {
         //который проверяет filename и если он равен null выбрасывает IOException со строкой "File not found",
         //в противном случает возвращает строку "File processing"
-        if (filename == null) throw new RuntimeException("File not found");
+        if (filename == null) throw new IOException("File not found");
         //try {
             java.io.FileWriter f = new java.io.FileWriter(filename, false);
             f.close();
@@ -77,15 +74,21 @@ public class Lesson9 {
 пробросить исключение IOException со строкой сообщения "файл не найден"
 */
     private int lineCount(String filename) throws IOException {
-        FileReader f = new FileReader(filename);
-        Scanner s = new Scanner(f);
         int result = 0;
-        while(s.hasNextLine()) {
-            String str = s.nextLine();
-            result++;
+        try{
+            FileReader f = new FileReader(filename);
+            Scanner s = new Scanner(f);
+            while (s.hasNextLine()) {
+                String str = s.nextLine();
+                result++;
+            }
+            s.close();
+            f.close();
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("файл не найден");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        s.close();
-        f.close();
         return result;
     }
 }
