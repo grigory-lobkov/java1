@@ -1,10 +1,6 @@
 package ru.progwards.java1.lessons.io2;
 
-import org.glassfish.grizzly.streams.Stream;
-
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Censor {
@@ -43,9 +39,10 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
 
     public static void censorFile(String inoutFileName, String[] obscene) {
         int obLen = obscene.length;
+        String star = "*";
         String[] stars = new String[obLen];
         for (int i = 0; i < obLen; i++) {
-            stars[i] = "*".repeat(obscene[i].length());
+            stars[i] = star.repeat(obscene[i].length());
         }
         //System.out.println(Arrays.toString(obscene));
         //System.out.println(Arrays.toString(stars));
