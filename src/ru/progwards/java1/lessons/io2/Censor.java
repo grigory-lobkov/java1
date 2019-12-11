@@ -134,11 +134,19 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
     }
     // Заменяем последовательности символов, не разбивая на слова
     public static void censorFile(String inoutFileName, String[] obscene) { // оказывается, надо искать не слова, а последовательность символов
-        int obLen = obscene.length;
-        String[] stars = new String[obLen];
-        for (int i = 0; i < obLen; i++) {
-            //stars[i] = "*".repeat(obscene[i].length()); // ваш тестер не компмилит
-            stars[i] = repeatStr("*", obscene[i].length());
+
+        if (inoutFileName == null || inoutFileName.compareTo("") == 0) throw new CensorException("Имя файла передавать обязатльно", inoutFileName);
+        if (obscene == null) throw new CensorException("Последовательность слов передавать обязательно", inoutFileName);
+
+        try {
+            int obLen = obscene.length;
+            String[] stars = new String[obLen];
+            for (int i = 0; i < obLen; i++) {
+                //stars[i] = "*".repeat(obscene[i].length()); // ваш тестер не компмилит
+                stars[i] = repeatStr("*", obscene[i].length());
+            }
+        } catch (Exception e) {
+            throw new CensorException(e.getMessage(), inoutFileName);
         }
 
         String tmpFileName = inoutFileName + ".tmp";
@@ -161,10 +169,14 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         } catch (IOException e) {
             throw new CensorException(e.getMessage(), inoutFileName);
         }
-        File f = new File(inoutFileName);
-        f.delete();
-        File n = new File(tmpFileName);
-        n.renameTo(f);
+        try {
+            File f = new File(inoutFileName);
+            f.delete();
+            File n = new File(tmpFileName);
+            n.renameTo(f);
+        } catch (Exception e) {
+            throw new CensorException(e.getMessage(), inoutFileName);
+        }
     }
 
     public static void main(String[] args) {
