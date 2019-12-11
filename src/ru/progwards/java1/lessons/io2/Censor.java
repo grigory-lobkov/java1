@@ -45,7 +45,7 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         }
     }
 
-    public static void censorFile1(String inoutFileName, String[] obscene) { // почему-то тестер не принял вариант с переводчиком
+    public static void censorFile1(String inoutFileName, String[] obscene) { // почему-то тестер не принял вариант с переводчиком и это было бы правильно для utf-8. Минус - пересоздание файла
         int obLen = obscene.length;
         String[] stars = new String[obLen];
         for (int i = 0; i < obLen; i++) {
@@ -72,80 +72,59 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
     }
 
 
-    private static long rafGetWordStart(RandomAccessFile raf, long startPos) throws IOException {
-        raf.seek(startPos);
+    private static Word rafGetNextWord(RandomAccessFile raf, Word prevWord) throws IOException {
+        long pos = prevWord.endPos + 1;
+        raf.seek(pos);
         long len = raf.length();
-        long result = startPos;
-        while (result < len) {
-            int c = raf.read();
-            //System.out.println(c);
-            if (Character.isLetter(c)) return result;
-            result++;
-        }
-        return -1;
-    }
-    private static long rafGetWordEnd(RandomAccessFile raf, long startPos) throws IOException {
-        raf.seek(startPos);
-        long len = raf.length();
-        long result = startPos;
-        while (result < len) {
-            int c = raf.read();
-            //System.out.println(c);
-            if (!Character.isLetter(c)) return result;
-            result++;
-        }
-        return -1;
-    }
-    private static Word rafGetWord(RandomAccessFile raf, long startPos) throws IOException {
-        raf.seek(startPos);
-        long len = raf.length();
-        long result = startPos;
         int c = 0;
-        while (result < len) {
+
+        while (pos < len) {
             c = raf.read();
             if (Character.isLetter(c)) break;
-            result++;
+            pos++;
         }
-        if(result == len) return new Word(-1);
-        Word rslt = new Word(result);
-        StringBuilder sb = new StringBuilder((char)c);
-        while (result < len) {
+        if(pos == len) return null;
+        Word rslt = new Word(pos);
+
+        StringBuilder sb = new StringBuilder(16);
+        sb.append((char)c);
+        while (pos < len) {
             c = raf.read();
             if (!Character.isLetter(c)) break;
             sb.append((char)c);
-            result++;
+            pos++;
         }
-        rslt.endPos = result;
+        rslt.endPos = pos;
         rslt.word = sb.toString();
         return rslt;
+    }
+    private static void rafEraseWord(RandomAccessFile raf, Word word, int charCode) throws IOException {
+        long pos = word.startPos;
+        raf.seek(pos);
+        while (pos <= word.endPos) {
+            raf.write(charCode);
+            pos++;
+        }
     }
     public static void censorFile(String inoutFileName, String[] obscene) { //
         Set<String> obs = new HashSet<String>(Arrays.asList(obscene));
 
         try (RandomAccessFile raf = new RandomAccessFile(inoutFileName, "rw")) {
 
-            long len = raf.length();
-            //long wordStart = 0;
-            //long wordEnd = -1;
-            long[] pos = {0,-1};
-            String word;
-            while (pos[0] >= 0) {
-                //wordStart = rafGetWordStart(raf, wordEnd + 1);
-                long[] pos = rafGetWordPos(raf, pos[1] + 1);
-                if (pos[0] >= 0) {
-                    //wordEnd = rafGetWordEnd(raf, wordStart + 1);
-                    word = rafGetWord(raf, wordStart + 1);
-                    if(obs.contains(word)) {
-
+            Word word = new Word(0, -1, "");
+            while (word != null) {
+                word = rafGetNextWord(raf, word);
+                if (word != null) {
+                    if (obs.contains(word.word)) {
+                        rafEraseWord(raf, word, '*');
                     }
-                    System.out.println(wordStart + "-" + wordEnd);
+                    //System.out.println(word);
                 }
             }
         } catch (IOException e) {
             throw new CensorException(e.getMessage(), inoutFileName);
         }
     }
-
 
 
     public static void main(String[] args) {
@@ -155,17 +134,25 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
 
 }
 class Word {
-    long startPos = -1;
-    long endPos = 0;
-    String word = null;
+    long startPos;
+    long endPos;
+    String word;
 
     Word(long startPos) {
         this.startPos = startPos;
     }
-
     Word(long startPos, long endPos, String word) {
         this.startPos = startPos;
         this.endPos = endPos;
         this.word = word;
+    }
+
+    @Override
+    public String toString() {
+        return "Word{" +
+                "startPos=" + startPos +
+                ", endPos=" + endPos +
+                ", word='" + word + '\'' +
+                '}';
     }
 }
