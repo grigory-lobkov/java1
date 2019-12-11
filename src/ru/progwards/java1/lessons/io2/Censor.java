@@ -109,18 +109,23 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
     public static void censorFile(String inoutFileName, String[] obscene) { //
         Set<String> obs = new HashSet<String>(Arrays.asList(obscene));
 
-        try (RandomAccessFile raf = new RandomAccessFile(inoutFileName, "rw")) {
-
-            Word word = new Word(0, -1, "");
-            while (word != null) {
-                word = rafGetNextWord(raf, word);
-                if (word != null) {
-                    if (obs.contains(word.word)) {
-                        rafEraseWord(raf, word, '*');
+        try {
+            RandomAccessFile raf = new RandomAccessFile(inoutFileName, "rw"); // вынес из ry-with-resources по совету Арсения
+            try {
+                Word word = new Word(0, -1, "");
+                while (word != null) {
+                    word = rafGetNextWord(raf, word);
+                    if (word != null) {
+                        if (obs.contains(word.word)) {
+                            rafEraseWord(raf, word, '*');
+                        }
+                        //System.out.println(word);
                     }
-                    //System.out.println(word);
                 }
+            } catch (IOException e) {
+                throw new CensorException(e.getMessage(), inoutFileName);
             }
+            raf.close();
         } catch (IOException e) {
             throw new CensorException(e.getMessage(), inoutFileName);
         }
