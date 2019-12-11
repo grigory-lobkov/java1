@@ -45,6 +45,7 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         }
     }
 
+    // заменяем с помощью переводчика с разбивкой на слова
     public static void censorFile1(String inoutFileName, String[] obscene) { // почему-то тестер не принял вариант с переводчиком и это было бы правильно для utf-8. Минус - пересоздание файла
         int obLen = obscene.length;
         String[] stars = new String[obLen];
@@ -106,7 +107,8 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
             pos++;
         }
     }
-    public static void censorFile(String inoutFileName, String[] obscene) { //
+    // заменяем не переписывая файл, с разбивкой на слова
+    public static void censorFile2(String inoutFileName, String[] obscene) { //
         Set<String> obs = new HashSet<String>(Arrays.asList(obscene));
 
         try {
@@ -130,7 +132,40 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
             throw new CensorException(e.getMessage(), inoutFileName);
         }
     }
+    // Заменяем последовательности символов, не разбивая на слова
+    public static void censorFile(String inoutFileName, String[] obscene) { // оказывается, надо искать не слова, а последовательность символов
+        int obLen = obscene.length;
+        String[] stars = new String[obLen];
+        for (int i = 0; i < obLen; i++) {
+            //stars[i] = "*".repeat(obscene[i].length()); // ваш тестер не компмилит
+            stars[i] = repeatStr("*", obscene[i].length());
+        }
 
+        String tmpFileName = inoutFileName + ".tmp";
+        String lineSeparator = System.getProperty("line.separator");
+        boolean firstLine = true;
+
+        try (FileReader r = new FileReader(inoutFileName); Scanner s = new Scanner(r); FileWriter w = new FileWriter(tmpFileName)) {
+            while (s.hasNext()) {
+                if (firstLine) {
+                    firstLine = false;
+                } else {
+                    w.write(lineSeparator);
+                }
+                String str = s.nextLine();
+                for (int i = obLen - 1; i >= 0; i--) {
+                    str = str.replace(obscene[i], stars[i]);
+                }
+                w.write(str);
+            }
+        } catch (IOException e) {
+            throw new CensorException(e.getMessage(), inoutFileName);
+        }
+        File f = new File(inoutFileName);
+        f.delete();
+        File n = new File(tmpFileName);
+        n.renameTo(f);
+    }
 
     public static void main(String[] args) {
         //censorFile("src/ru/progwards/java1/lessons/io2/Censor.txt", new String[]{"java", "Oracle", "Sun", "Microsystems"});
