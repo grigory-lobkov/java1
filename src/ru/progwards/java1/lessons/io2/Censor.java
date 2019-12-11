@@ -138,9 +138,11 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         if (inoutFileName == null || inoutFileName.compareTo("") == 0) throw new CensorException("Имя файла передавать обязатльно", inoutFileName);
         if (obscene == null) throw new CensorException("Последовательность слов передавать обязательно", inoutFileName);
 
+        int obLen;
+        String[] stars;
         try {
-            int obLen = obscene.length;
-            String[] stars = new String[obLen];
+            obLen = obscene.length;
+            stars = new String[obLen];
             for (int i = 0; i < obLen; i++) {
                 //stars[i] = "*".repeat(obscene[i].length()); // ваш тестер не компмилит
                 stars[i] = repeatStr("*", obscene[i].length());
