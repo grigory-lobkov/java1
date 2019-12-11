@@ -41,7 +41,7 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
 
         @Override
         public String toString() {
-            return fileName + ":" + errName;
+            return errName + ":" + fileName;
         }
     }
 
