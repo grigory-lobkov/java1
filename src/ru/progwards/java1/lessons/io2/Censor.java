@@ -122,11 +122,11 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
                         //System.out.println(word);
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new CensorException(e.getMessage(), inoutFileName);
             }
             raf.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new CensorException(e.getMessage(), inoutFileName);
         }
     }
