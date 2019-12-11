@@ -110,7 +110,7 @@ obscene = {"Java", "Oracle", "Sun", "Microsystems"}
         Set<String> obs = new HashSet<String>(Arrays.asList(obscene));
 
         try {
-            RandomAccessFile raf = new RandomAccessFile(inoutFileName, "rw"); // вынес из ry-with-resources по совету Арсения
+            RandomAccessFile raf = new RandomAccessFile(inoutFileName, "rw"); // вынес из try-with-resources по совету Арсения
             try {
                 Word word = new Word(0, -1, "");
                 while (word != null) {
