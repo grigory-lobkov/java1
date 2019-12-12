@@ -9,7 +9,7 @@ public class Lesson10 {
     public static void doSomething(int n) throws IOException {
         throw new IOException("ok");
     }
-    public static void test(int n){
+    public static void test1(int n){
         //Throwable suppressed = null;
         try {
             doSomething(n);
@@ -21,7 +21,18 @@ public class Lesson10 {
             System.out.println("finally executed");
         }
     }
-
+    public void test (int n) throws IOException {
+        //Throwable suppressed = null;
+        try {
+            doSomething(n);
+        }catch (IOException e) {
+            System.out.println(e.getMessage());
+            //suppressed = e;
+            throw e;
+        } finally {
+            System.out.println("finally executed");
+        }
+    }
 /*
 Реализуйте метод с сигнатурой public String invertWords(String sentence),
 который переставляет слова, в полученной фразе. В качестве исходного

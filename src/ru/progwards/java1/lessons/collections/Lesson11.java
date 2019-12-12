@@ -1,3 +1,5 @@
+package ru.progwards.java1.lessons.collections;
+
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -14,12 +16,12 @@ public class Lesson11 {
 */
 
     public static List<Integer> listAction1(List<Integer> list) {
-        if(list == null) return null;
-        if(list.size() == 0) return new ArrayList<>();
+        if (list == null) return null;
+        if (list.size() == 0) return new ArrayList<>();
         List<Integer> result = new ArrayList<>();
         result.addAll(list);
         int minIdx = 0, minVal = Integer.MAX_VALUE, maxVal = Integer.MIN_VALUE, lastIdx = result.size() - 1;
-        for (int i = lastIdx; i>=0; i--) {
+        for (int i = lastIdx; i >= 0; i--) {
             int v = result.get(i);
             if (v > maxVal) maxVal = v;
             if (v < minVal) {
@@ -32,9 +34,10 @@ public class Lesson11 {
         result.add(2, maxVal);
         return result;
     }
+
     public static List<Integer> listAction(List<Integer> list) {
-        if(list == null) return null;
-        if(list.size() == 0) return new ArrayList<>();
+        if (list == null) return null;
+        if (list.size() == 0) return new ArrayList<>();
         List<Integer> result = new ArrayList<>();
         result.addAll(list);
         result.remove(Collections.min(result));
@@ -43,13 +46,13 @@ public class Lesson11 {
         return result;
     }
 
-/*
-Напишите метод, с сигнатурой public List<Integer> filter(List<Integer> list) который работает по следующему алгоритму
+    /*
+    Напишите метод, с сигнатурой public List<Integer> filter(List<Integer> list) который работает по следующему алгоритму
 
-суммирует значения всех элементов списка
-удаляет из списка элементы, значение которых меньше суммы, деленной на 100 (целочисленное деление)
-возвращает результирующий список
-*/
+    суммирует значения всех элементов списка
+    удаляет из списка элементы, значение которых меньше суммы, деленной на 100 (целочисленное деление)
+    возвращает результирующий список
+    */
     public static List<Integer> filter(List<Integer> list) {
         int sum = 0;
         for (int e : list) sum += e;
@@ -61,8 +64,22 @@ public class Lesson11 {
         else if (list instanceof List) result = new ArrayList<>();
         else throw new RuntimeException("Unknown 'list' type!");
         int drop = sum / 100;
-        for (Integer e : list) if(e<drop) result.add(e);
+        for (Integer e : list) if (e < drop) result.add(e);
         return result;
+    }
+
+/*
+Напишите метод с сигнатурой public void iterator3(ListIterator<Integer> iterator)
+который заменяет значение каждого элемента, которое кратно 3 на значение его индекса.
+*/
+
+    public static void iterator3(ListIterator<Integer> iterator) {
+        while (iterator.hasNext()) {
+            int n = iterator.next();
+            if (n % 3 == 0) {
+                iterator.set(iterator.nextIndex() - 1);
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -70,9 +87,16 @@ public class Lesson11 {
         System.out.println(list);
         System.out.println(listAction(list));
         System.out.println(listAction1(list));*/
-        List<Integer> list = new ArrayList<>();
-        for(Integer e:new Integer[]{40, 300, 0, 3, 1, 2}) list.add(e);
-        System.out.println(filter(list));
+
+        /*List<Integer> list = new ArrayList<>();
+        for(Integer e:new Integer[]{40, 300, 0, 4, 3, 1, 2}) list.add(e);
+        System.out.println(filter(list));*/
+
+        List<Integer> list = new LinkedList<>();
+        for (Integer e : new Integer[]{40, 300, 0, 4, 3, 1, 2}) list.add(e);
+        System.out.println(list);
+        iterator3(list.listIterator());
+        System.out.println(list);
     }
 
 
