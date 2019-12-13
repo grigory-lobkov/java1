@@ -144,7 +144,7 @@ public static String findSimilar(Collection<String> names)
         }
     }
 
-    public static String findSimilar(Collection<String> names) {
+    public static String findSimilar1(Collection<String> names) { // метод ищет не сподряд идущие элементы, а среди всех
         if (names == null) return null;
         if (names.size() == 0) return null;
         //if (names.size() == 1) return names.iterator().next();
@@ -152,9 +152,38 @@ public static String findSimilar(Collection<String> names)
         Similars similars = new Finder().new Similars();
         for (String s : names) similars.addItem(s);
 
-        String result = similars.maxContent + ":" + similars.maxTimes;
-        if (result.compareTo("Борис:4") == 0) result = "Дмитрий:2";
-        return result;
+        return similars.maxContent + ":" + similars.maxTimes;
+    }
+
+    public static String findSimilar(Collection<String> names) {
+        if (names == null) return null;
+        if (names.size() == 0) return null;
+        //if (names.size() == 1) return names.iterator().next();
+
+        String maxString = "";
+        int maxCount = 0;
+        String curString = "";
+        int curCount = 0;
+        Iterator i = names.iterator();
+        while (i.hasNext()) {
+            String s = (String) i.next();
+            if (s.compareTo(curString) == 0) {
+                curCount++;
+            } else {
+                if (curCount > maxCount) {
+                    maxString = curString;
+                    maxCount = curCount;
+                }
+                curCount = 1;
+                curString = s;
+            }
+        }
+        if (curCount > maxCount) {
+            maxString = curString;
+            maxCount = curCount;
+        }
+
+        return maxString + ":" + maxCount;
     }
 
     public static void main(String[] args) {
@@ -173,16 +202,10 @@ public static String findSimilar(Collection<String> names)
         System.out.println(s);
         System.out.println(findSequence(s));*/
         List<String> s = new ArrayList<>();
-        for (int i = 0; i < 10; i++) s.add("" + (i % 10));
-        //s.add(0,2+"");
+        for (int i = 0; i < 10; i++) s.add("" + (i / (3 + i / 5)));
+        s.add(0, 2 + "");
         System.out.println(s);
         System.out.println(findSimilar(s));
-        /*ERROR: Тест "Метод findSimilar(Collection names)" не пройден.
-        Метод findSimilar(Collection names) возвращает неверное значение.
-        Передан параметр содержащий значения: Григорий,Василий,Борис,Григорий,Борис,
-                Василий,Александр,Борис,Александр,Василий,Дмитрий,Дмитрий,Борис.
-        Возвращен результат: Борис:4. Ожидался: Дмитрий:2.*/
-        // не верный тест!!!!! должно быть "Борис:4"
     }
 
 }
