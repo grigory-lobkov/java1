@@ -14,15 +14,17 @@ public class MatrixIterator<T> implements Iterator<T> {
     private T[][] array;
     int len;
     int idx;
+    int nextIdx;
     ArrayIterator<T> iterator;
     ArrayIterator<T> nextIterator;
 
     MatrixIterator(T[][] array) {
         this.array = array;
         len = array == null ? -1 : array.length;
-        idx = 0;
+        idx = -1;
         calcNextIterator();
         iterator = nextIterator;
+        idx = nextIdx;
     }
 
     void calcNextIterator() {
@@ -30,6 +32,7 @@ public class MatrixIterator<T> implements Iterator<T> {
         while (i < len) {
             if (array[i] != null && array[i].length > 0) {
                 nextIterator = new ArrayIterator<>(array[i]);
+                nextIdx = i;
                 return;
             }
             i++;
@@ -45,15 +48,17 @@ public class MatrixIterator<T> implements Iterator<T> {
     @Override
     public T next() {
         if (!iterator.hasNext()) {
-            idx++;
+            idx = nextIdx;
             iterator = nextIterator;
-            if (!iterator.hasNext()) calcNextIterator();
         }
-        return iterator.next();
+        T result = iterator.next();
+        if (!iterator.hasNext()) calcNextIterator();
+        return result;
     }
 
     public static void main(String[] args) {
-        MatrixIterator<Integer> i = new MatrixIterator<>(new Integer[][]{new Integer[]{2, 1, 3}, new Integer[]{1, 2, 3}, new Integer[]{3, 2, 1}});
+        //MatrixIterator<Integer> i = new MatrixIterator<>(new Integer[][]{new Integer[]{2, 2, 2}, new Integer[]{1, 2, 3}, null});
+        MatrixIterator<Integer> i = new MatrixIterator<>(new Integer[][]{null, new Integer[]{}, null});
         while (i.hasNext()) System.out.println(i.next());
     }
 }
