@@ -1,11 +1,6 @@
 package ru.progwards.java1.lessons.collections;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.Iterator;
-
-import static ru.progwards.java1.lessons.collections.Creator.*;
+import java.util.*;
 
 public class Finder {
 
@@ -99,7 +94,6 @@ public static boolean findSequence(Collection<Integer> numbers)
         }
 
         for (i = 1; i <= size; i++) {
-            //System.out.println(i + ":" + s.get(i));
             if (s.get(i)) continue;
             else return false;
         }
@@ -116,6 +110,48 @@ public static String findSimilar(Collection<String> names)
  вернуть результат для элемента, повторяющаяся последовательность которого началась с наименьшего индекса.
 */
 
+    private class Similar {
+        String content;
+        int times = 1;
+
+        Similar(String content) {
+            this.content = content;
+        }
+    }
+
+    private class Similars {
+        String maxContent;
+        private int maxTimes = 0;
+        private List<Similar> items = new ArrayList<>();
+
+        void addItem(String item) {
+            for (Similar s : items) {
+                if (s.content.compareTo(item) == 0) {
+                    if (++s.times > maxTimes) {
+                        maxTimes = s.times;
+                        maxContent = item;
+                    }
+                    return;
+                }
+            }
+            items.add(new Similar(item));
+            if (maxTimes == 0) {
+                maxTimes = 1;
+                maxContent = item;
+            }
+        }
+    }
+
+    public static String findSimilar(Collection<String> names) {
+        if (names == null) return null;
+        if (names.size() == 0) return null;
+        //if (names.size() == 1) return names.iterator().next();
+
+        Similars similars = new Finder().new Similars();
+        for (String s : names) similars.addItem(s);
+        return similars.maxContent;
+    }
+
     public static void main(String[] args) {
         /*Collection<Integer> e = fillEven(10);
         Collection<Integer> o = fillOdd(10);
@@ -126,11 +162,16 @@ public static String findSimilar(Collection<String> names)
         System.out.println(findSequence(o));
         System.out.println(t);
         System.out.println(findSequence(t));*/
-        Collection<Integer> s = new ArrayList<>();
+        /*Collection<Integer> s = new ArrayList<>();
         for (int i = 1; i < 10; i++) s.add(i);
         //s.add(1);
         System.out.println(s);
-        System.out.println(findSequence(s));
+        System.out.println(findSequence(s));*/
+        List<String> s = new ArrayList<>();
+        for (int i = 0; i < 10; i++) s.add("" + (i % 10));
+        //s.add(0,2+"");
+        System.out.println(s);
+        System.out.println(findSimilar(s));
 
     }
 
