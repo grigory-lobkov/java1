@@ -1,7 +1,9 @@
 package ru.progwards.java1.lessons.collections;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
+import java.util.Iterator;
 
 import static ru.progwards.java1.lessons.collections.Creator.*;
 
@@ -78,25 +80,31 @@ public static boolean findSequence(Collection<Integer> numbers)
  порядок может быть произвольный
 */
 
-    public static Collection<Integer> findSequence(Collection<Integer> numbers) {
+    public static boolean findSequence(Collection<Integer> numbers) {
+        if (numbers == null) return false;
+        int size = numbers.size();
+        if (size == 0) return false;
 
-        if (numbers == null || numbers.size() == 0) return null;
+        BitSet s = new BitSet(size + 1);
+        int i = 1;
+        int num;
 
-        int prev1 = Integer.MAX_VALUE;
-        int prev2 = Integer.MAX_VALUE;
-        int idx = 0;
-        Collection<Integer> result = new ArrayList<>();
-
-        for (int num : numbers) {
-            if (idx > 1 && prev1 > num && prev1 > prev2) {
-                result.add(idx - 1);
+        for (Iterator<Integer> iterator = numbers.iterator(); iterator.hasNext(); ) {
+            num = iterator.next();
+            if (num < 1 || num > size) {
+                return false;
             }
-            prev2 = prev1;
-            prev1 = num;
-            idx++;
+            s.set(num, true);
+            i++;
         }
 
-        return result;
+        for (i = 1; i <= size; i++) {
+            //System.out.println(i + ":" + s.get(i));
+            if (s.get(i)) continue;
+            else return false;
+        }
+
+        return true;
     }
 
 /*
@@ -109,15 +117,21 @@ public static String findSimilar(Collection<String> names)
 */
 
     public static void main(String[] args) {
-        Collection<Integer> e = fillEven(10);
+        /*Collection<Integer> e = fillEven(10);
         Collection<Integer> o = fillOdd(10);
         Collection<Integer> t = fill3(10);
         System.out.println(e);
-        System.out.println(findLocalMax(e));
+        System.out.println(findSequence(e));
         System.out.println(o);
-        System.out.println(findLocalMax(o));
+        System.out.println(findSequence(o));
         System.out.println(t);
-        System.out.println(findLocalMax(t));
+        System.out.println(findSequence(t));*/
+        Collection<Integer> s = new ArrayList<>();
+        for (int i = 1; i < 10; i++) s.add(i);
+        //s.add(1);
+        System.out.println(s);
+        System.out.println(findSequence(s));
+
     }
 
 }

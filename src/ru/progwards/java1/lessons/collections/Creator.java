@@ -26,7 +26,7 @@ public static Collection fillOdd<Integer>(int n)
 */
 
     public static Collection<Integer> fillOdd(int n) {
-        int v = n*2-1;
+        int v = n * 2 - 1;
         Collection<Integer> result = new ArrayList<>();
         for (int i = n; i > 0; i--, v -= 2) result.add(v);
         return result;
@@ -43,10 +43,16 @@ public static Collection<Integer> fill3(int n)
     public static Collection<Integer> fill3(int n) {
         Collection<Integer> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            switch (i%3) {
-                case 0: result.add(i); break;
-                case 1: result.add(i*i); break;
-                case 2: result.add(i*i*i); break;
+            switch (i % 3) {
+                case 0:
+                    result.add(i);
+                    break;
+                case 1:
+                    result.add(i * i);
+                    break;
+                case 2:
+                    result.add(i * i * i);
+                    break;
             }
         }
         return result;
@@ -57,5 +63,4 @@ public static Collection<Integer> fill3(int n)
         //System.out.println(fillOdd(6));
         System.out.println(fill3(6));
     }
-
 }
