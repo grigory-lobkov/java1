@@ -40,7 +40,7 @@ public static Collection<Integer> fill3(int n)
 второе - индекс в квадрате, третье - индекс в кубе, количество элементов в коллекции n
 */
 
-    public static Collection<Integer> fill3(int n) {
+    public static Collection<Integer> fill31(int n) {
         Collection<Integer> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             switch (i % 3) {
@@ -58,9 +58,21 @@ public static Collection<Integer> fill3(int n)
         return result;
     }
 
+    public static Collection<Integer> fill3(int n) {
+        Collection<Integer> result = new ArrayList<>();
+        int i2;
+        for (int i = 0; i < n; i++) {
+            result.add(i);
+            i2 = i * i;
+            result.add(i2);
+            result.add(i2 * i);
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         //System.out.println(fillEven(6));
         //System.out.println(fillOdd(6));
-        System.out.println(fill3(6));
+        System.out.println(fill3(3));
     }
 }

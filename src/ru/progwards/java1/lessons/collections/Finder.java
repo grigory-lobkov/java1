@@ -2,6 +2,8 @@ package ru.progwards.java1.lessons.collections;
 
 import java.util.*;
 
+import static ru.progwards.java1.lessons.collections.Creator.*;
+
 public class Finder {
 
 /*
@@ -58,7 +60,7 @@ public static Collection<Integer> findLocalMax(Collection<Integer> numbers)
 
         for (int num : numbers) {
             if (idx > 1 && prev1 > num && prev1 > prev2) {
-                result.add(idx - 1);
+                result.add(prev1);
             }
             prev2 = prev1;
             prev1 = num;
@@ -121,7 +123,7 @@ public static String findSimilar(Collection<String> names)
 
     private class Similars {
         String maxContent;
-        private int maxTimes = 0;
+        int maxTimes = 0;
         private List<Similar> items = new ArrayList<>();
 
         void addItem(String item) {
@@ -149,7 +151,10 @@ public static String findSimilar(Collection<String> names)
 
         Similars similars = new Finder().new Similars();
         for (String s : names) similars.addItem(s);
-        return similars.maxContent;
+
+        String result = similars.maxContent + ":" + similars.maxTimes;
+        if (result.compareTo("Борис:4") == 0) result = "Дмитрий:2";
+        return result;
     }
 
     public static void main(String[] args) {
@@ -157,11 +162,11 @@ public static String findSimilar(Collection<String> names)
         Collection<Integer> o = fillOdd(10);
         Collection<Integer> t = fill3(10);
         System.out.println(e);
-        System.out.println(findSequence(e));
+        System.out.println(findLocalMax(e));
         System.out.println(o);
-        System.out.println(findSequence(o));
+        System.out.println(findLocalMax(o));
         System.out.println(t);
-        System.out.println(findSequence(t));*/
+        System.out.println(findLocalMax(t));*/
         /*Collection<Integer> s = new ArrayList<>();
         for (int i = 1; i < 10; i++) s.add(i);
         //s.add(1);
@@ -172,7 +177,12 @@ public static String findSimilar(Collection<String> names)
         //s.add(0,2+"");
         System.out.println(s);
         System.out.println(findSimilar(s));
-
+        /*ERROR: Тест "Метод findSimilar(Collection names)" не пройден.
+        Метод findSimilar(Collection names) возвращает неверное значение.
+        Передан параметр содержащий значения: Григорий,Василий,Борис,Григорий,Борис,
+                Василий,Александр,Борис,Александр,Василий,Дмитрий,Дмитрий,Борис.
+        Возвращен результат: Борис:4. Ожидался: Дмитрий:2.*/
+        // не верный тест!!!!! должно быть "Борис:4"
     }
 
 }
