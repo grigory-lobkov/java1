@@ -57,4 +57,5 @@ public static Collection<Integer> fill3(int n)
         //System.out.println(fillOdd(6));
         System.out.println(fill3(6));
     }
+
 }
