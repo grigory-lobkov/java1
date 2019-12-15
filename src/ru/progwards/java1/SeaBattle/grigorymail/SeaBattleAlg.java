@@ -57,6 +57,7 @@ public class SeaBattleAlg {
         FieldDot[][] field;
         int maxX, maxY;
         int[] shipsLeft;
+        int maxShip;
 
         Field(SeaBattle seaBattle) {
             maxX = seaBattle.getSizeX();
@@ -66,6 +67,7 @@ public class SeaBattleAlg {
                 for (int x = 0; x < maxY; x++)
                     field[x][y] = FieldDot.NOTFIRED;
             shipsLeft = new int[]{0, 4, 3, 2, 1};
+            maxShip = 4;
         }
 
         public void mark(int x, int y, SeaBattle.FireResult fireResult) {
@@ -128,6 +130,18 @@ public class SeaBattleAlg {
         void minusShip(int x, int y) {
             int s = getShipSize(x, y);
             shipsLeft[s]--;
+            if (s == maxShip && shipsLeft[s] == 0) {
+                maxShip = 0;
+                for (int i = 0; i < shipsLeft.length; i++) if (shipsLeft[i] > 0) maxShip = i;
+            }
+        }
+
+        boolean isShipsLeft() {
+            return maxShip > 0;
+        }
+
+        int getMaxShipSize(int x, int y) {
+            return maxShip;
         }
 
         @Override
@@ -169,14 +183,181 @@ public class SeaBattleAlg {
         }
     }
 
-    public void battleAlgorithm(SeaBattle seaBattle) {
-        Field field = new Field(seaBattle);
-        for (int y = 0; y < seaBattle.getSizeX(); y++) {
+    Field field;
+    int phase;
+    boolean findInjured;
+    int x, y;
+
+    boolean checkValue(int xx, int yy, FieldDot fieldDot) {
+        if (xx < 0 || yy < 0 || xx >= field.maxX || yy >= field.maxY) return false;
+        return field.field[xx][yy] == fieldDot;
+    }
+
+    boolean tryDot(int xx, int yy) {
+        if (checkValue(xx, yy, FieldDot.NOTFIRED)) {
+            x = xx;
+            y = yy;
+            return true;
+        }
+        return false;
+    }
+
+    boolean findInjuredNear(int startX, int startY) {
+        boolean dirX = false;
+        boolean dirY = false;
+        if (checkValue(startX - 1, startY, FieldDot.HIT)) {
+            dirX = true;
+        } else if (checkValue(startX + 1, startY, FieldDot.HIT)) {
+            dirX = true;
+        } else if (checkValue(startX, startY - 1, FieldDot.HIT)) {
+            dirY = true;
+        } else if (checkValue(startX, startY + 1, FieldDot.HIT)) {
+            dirY = true;
+        } else if (checkValue(startX, startY, FieldDot.NOTFIRED)) {
+            x = startX - 1;
+            y = startY;
+            return true;
+        } else if (checkValue(startX, startY, FieldDot.NOTFIRED)) {
+            x = startX + 1;
+            y = startY;
+            return true;
+        } else if (checkValue(startX, startY, FieldDot.NOTFIRED)) {
+            x = startX;
+            y = startY - 1;
+            return true;
+        } else if (checkValue(startX, startY, FieldDot.NOTFIRED)) {
+            x = startX;
+            y = startY + 1;
+            return true;
+        } else return false;
+        if (dirX) {
+            y = startY;
+            if (checkValue(startX - 1, y, FieldDot.NOTFIRED)) {
+                x = startX - 1;
+                return true;
+            }
+            if (checkValue(startX - 1, y, FieldDot.HIT)) {
+                if (checkValue(startX - 2, y, FieldDot.NOTFIRED)) {
+                    x = startX - 2;
+                    return true;
+                }
+                if (checkValue(startX - 2, y, FieldDot.HIT) && checkValue(startX - 3, y, FieldDot.NOTFIRED)) {
+                    x = startX - 3;
+                    return true;
+                }
+            }
+            if (checkValue(startX + 1, y, FieldDot.NOTFIRED)) {
+                x = startX + 1;
+                return true;
+            }
+            if (checkValue(startX + 1, y, FieldDot.HIT)) {
+                if (checkValue(startX + 2, y, FieldDot.NOTFIRED)) {
+                    x = startX + 2;
+                    return true;
+                }
+                if (checkValue(startX + 2, y, FieldDot.HIT) && checkValue(startX + 3, y, FieldDot.NOTFIRED)) {
+                    x = startX + 3;
+                    return true;
+                }
+            }
+        } else if (dirY) {
+            x = startX;
+            if (checkValue(x, startY - 1, FieldDot.NOTFIRED)) {
+                y = startY - 1;
+                return true;
+            }
+            if (checkValue(x, startY - 1, FieldDot.HIT)) {
+                if (checkValue(x, startY - 2, FieldDot.NOTFIRED)) {
+                    y = startY - 2;
+                    return true;
+                }
+                if (checkValue(x, startY - 2, FieldDot.HIT) && checkValue(x, startY - 3, FieldDot.NOTFIRED)) {
+                    y = startY - 3;
+                    return true;
+                }
+            }
+            if (checkValue(x, startY + 1, FieldDot.NOTFIRED)) {
+                y = startY + 1;
+                return true;
+            }
+            if (checkValue(x, startY + 1, FieldDot.HIT)) {
+                if (checkValue(x, startY + 2, FieldDot.NOTFIRED)) {
+                    y = startY + 2;
+                    return true;
+                }
+                if (checkValue(x, startY + 2, FieldDot.HIT) && checkValue(x, startY + 3, FieldDot.NOTFIRED)) {
+                    y = startY + 3;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    boolean findFirstPossible(int shipSize) {
+
+    }
+
+    boolean findFirstEmpty() {
+        for (int y = 0; y < field.maxX; y++) {
             for (int x = 0; x < seaBattle.getSizeY(); x++) {
                 if (field.field[x][y] == FieldDot.NOTFIRED)
                     field.mark(x, y, seaBattle.fire(x, y));
             }
-            if (y > 5) System.out.println(field);
+        }
+    }
+
+    public void battleAlgorithm(SeaBattle seaBattle) {
+        //самая заполненная клетка — A3 (и симметричные ей) — на них корабли есть в 475795243932227 случаях (25.6%),
+        // самая незаполненная — Б2 (и симметричные) — она заполнена в 273993917558420 случаях (14.7%)
+        field = new Field(seaBattle);
+        phase = 10;
+        findInjured = false;
+        boolean fire = true;
+        x = 0;
+        y = 0;
+        int injX = 0, injY = 0;
+        while (phase >= 0) {
+            fire = false;
+            if (findInjured) {
+                if (findInjuredNear(injX, injY)) fire = true;
+                //else findInjured = false;
+            }
+            if (!fire && phase == 10) {
+                if (tryDot(0, 2) || tryDot(0, field.maxY - 3)
+                        || tryDot(2, 0) || tryDot(2, field.maxY - 1)
+                        || tryDot(field.maxX - 3, 0) || tryDot(field.maxX - 3, field.maxY - 1)
+                        || tryDot(field.maxX - 1, 2) || tryDot(field.maxX - 1, field.maxY - 3))
+                    fire = true;
+                else phase = 20;
+            }
+            if (!fire && phase == 20) {
+                if (findFirstPossible(field.maxShip)) fire = true;
+            }
+            if (!fire) {
+                if (findFirstEmpty()) fire = true;
+            }
+            if (fire) {
+                field.mark(x, y, seaBattle.fire(x, y));
+                if (findInjured)
+                    findInjured = field.field[x][y] != FieldDot.DESTROYED;
+                else {
+                    findInjured = field.field[x][y] == FieldDot.HIT;
+                    if (findInjured) {
+                        injX = x;
+                        injY = y;
+                    }
+                    System.out.println(field);
+                    try {
+                        System.in.read();
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                }
+                if (field.field[x][y] != FieldDot.MISS)
+                    if (!field.isShipsLeft()) phase = -1;
+            } else
+                phase = -2;
         }
     }
 
