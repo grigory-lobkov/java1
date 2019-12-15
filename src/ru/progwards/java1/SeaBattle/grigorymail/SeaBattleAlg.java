@@ -3,7 +3,7 @@ package ru.progwards.java1.SeaBattle.grigorymail;
 import ru.progwards.java1.SeaBattle.SeaBattle;
 import ru.progwards.java1.SeaBattle.SeaBattle.FireResult;
 
-import static ru.progwards.java1.SeaBattle.SeaBattle.FireResult.*;
+import static ru.progwards.java1.SeaBattle.SeaBattle.FireResult.MISS;
 
 public class SeaBattleAlg {
     // Тестовое поле создаётся конструктором
@@ -56,6 +56,7 @@ public class SeaBattleAlg {
     public class Field {
         FieldDot[][] field;
         int maxX, maxY;
+        int[] shipsLeft;
 
         Field(SeaBattle seaBattle) {
             maxX = seaBattle.getSizeX();
@@ -64,6 +65,7 @@ public class SeaBattleAlg {
             for (int y = 0; y < maxX; y++)
                 for (int x = 0; x < maxY; x++)
                     field[x][y] = FieldDot.NOTFIRED;
+            shipsLeft = new int[]{0, 4, 3, 2, 1};
         }
 
         public void mark(int x, int y, SeaBattle.FireResult fireResult) {
@@ -73,6 +75,7 @@ public class SeaBattleAlg {
                     break;
                 case DESTROYED:
                     markDestroyed(x, y);
+                    minusShip(x, y);
                     break;
                 case MISS:
                     field[x][y] = FieldDot.MISS;
@@ -100,6 +103,70 @@ public class SeaBattleAlg {
             markCantBe(x, y + 1);
             markCantBe(x, y - 1);
         }
+
+        int getShipSize(int x, int y, int dir) {
+            if (x < 0 || y < 0 || x >= maxX || y >= maxY) return 0;
+            if (field[x][y] != FieldDot.DESTROYED) return 0;
+            switch (dir) {
+                case 0:
+                    return 1 + getShipSize(x + 1, y, dir);
+                case 1:
+                    return 1 + getShipSize(x - 1, y, dir);
+                case 2:
+                    return 1 + getShipSize(x, y + 1, dir);
+                case 3:
+                    return 1 + getShipSize(x, y - 1, dir);
+            }
+            return 0;
+        }
+
+        int getShipSize(int x, int y) {
+            return 1 + getShipSize(x + 1, y, 0) + getShipSize(x - 1, y, 1)
+                    + getShipSize(x, y + 1, 2) + getShipSize(x, y - 1, 3);
+        }
+
+        void minusShip(int x, int y) {
+            int s = getShipSize(x, y);
+            shipsLeft[s]--;
+        }
+
+        @Override
+        public String toString() {
+            String s = "\n";
+            for (int y = 0; y < maxX; y++) {
+                for (int x = 0; x < maxY; x++)
+                    switch (field[x][y]) {
+                        case MISS:
+                            s += ".";
+                            break;
+                        case HIT:
+                            s += "x";
+                            break;
+                        case DESTROYED:
+                            s += "D";
+                            break;
+                        case NOTFIRED:
+                            s += " ";
+                            break;
+                        case CANTBE:
+                            s += "-";
+                            break;
+                    }
+                s += "\n";
+            }
+            return s;
+        }
+    }
+
+    public void battleAlgorithm1(SeaBattle seaBattle) {
+        Field field = new Field(seaBattle);
+        for (int y = 0; y < seaBattle.getSizeX(); y++) {
+            for (int x = 0; x < seaBattle.getSizeY(); x++) {
+                if (field.field[x][y] == FieldDot.NOTFIRED)
+                    field.mark(x, y, seaBattle.fire(x, y));
+            }
+            if (y > 5) System.out.println(field);
+        }
     }
 
     public void battleAlgorithm(SeaBattle seaBattle) {
@@ -109,13 +176,15 @@ public class SeaBattleAlg {
                 if (field.field[x][y] == FieldDot.NOTFIRED)
                     field.mark(x, y, seaBattle.fire(x, y));
             }
+            if (y > 5) System.out.println(field);
         }
     }
 
+
     // функция для отладки
     public static void main(String[] args) {
-        //SeaBattle seaBattle = new SeaBattle(true);
-        SeaBattle seaBattle = new SeaBattle();
+        SeaBattle seaBattle = new SeaBattle(true);
+        //SeaBattle seaBattle = new SeaBattle();
         new SeaBattleAlg().battleAlgorithm(seaBattle);
         System.out.println(seaBattle.getResult());
     }
