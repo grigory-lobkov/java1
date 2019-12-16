@@ -308,6 +308,25 @@ public class SeaBattleAlg {
 
     boolean findFirstMaxShip() {
         int shipSize = field.maxShip;
+        int lastEmpty;
+        for (int yy = 0; yy < field.maxY; yy++) {
+            lastEmpty = 0;
+            for (int xx = 0; xx < field.maxX; xx++)
+                if (field.field[xx][yy] != FieldDot.UNKNOWN) {
+                    int freeSpace = xx - lastEmpty;
+                    if (freeSpace >= shipSize) {
+                        y = yy;
+                        if(shipSize>1) {
+                            if (freeSpace == shipSize || freeSpace > shipSize && freeSpace % (shipSize-1) == 1) { //?
+                                x = lastEmpty + shipSize - 1 - y % 2;
+                            }
+                        }
+                        x = lastEmpty + shipSize - 1;
+                        return true;
+                    }
+                    lastEmpty = xx + 1;
+                }
+        }
         return false;
     }
 
@@ -359,29 +378,25 @@ public class SeaBattleAlg {
                 field.mark(x, y, seaBattle.fire(x, y));
                 if (findInjured) {
                     findInjured = field.field[x][y] != FieldDot.DESTROYED;
-                    /*System.out.println(field);
-                    try {
-                        System.in.read();
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }*/
                 } else {
                     findInjured = field.field[x][y] == FieldDot.HIT;
                     if (findInjured) {
                         injX = x;
                         injY = y;
                     }
-                    /*System.out.println(field);
-                    try {
-                        System.in.read();
-                    } catch (Exception e) {
-                        System.out.println(e);
-                    }*/
                 }
                 if (field.field[x][y] != FieldDot.MISS)
                     if (!field.isShipsLeft()) phase = -1;
             } else
                 phase = -2;
+            if(iter>15) {
+                System.out.println(field);
+                try {
+                    System.in.read();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
         }
         System.out.println(field);
         System.out.println("iteration="+iter+" phase="+phase);
