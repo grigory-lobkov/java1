@@ -167,13 +167,13 @@ public class SeaBattleAlg {
                             s += "-";
                             break;
                     }
-                s += "\n";
+                s += y + "\n";
             }
-            return s;
+            return s+" 0123456789";
         }
     }
 
-    public void battleAlgorithm(SeaBattle seaBattle) {
+    public void battleAlgorithm1(SeaBattle seaBattle) {
         Field field = new Field(seaBattle);
         for (int y = 0; y < seaBattle.getSizeX(); y++) {
             for (int x = 0; x < seaBattle.getSizeY(); x++) {
@@ -185,23 +185,12 @@ public class SeaBattleAlg {
     }
 
     Field field;
-    int phase;
-    boolean findInjured;
-    int x, y;
+    int fireX, fireY;
 
     boolean checkValue(int xx, int yy, FieldDot fieldDot) {
-        System.out.println("checkValue x="+xx+" y="+yy+" dot="+fieldDot);
+        //System.out.println("checkValue x=" + xx + " y=" + yy + " dot=" + fieldDot);
         if (xx < 0 || yy < 0 || xx >= field.maxX || yy >= field.maxY) return false;
         return field.field[xx][yy] == fieldDot;
-    }
-
-    boolean tryDot(int xx, int yy) {
-        if (checkValue(xx, yy, FieldDot.UNKNOWN)) {
-            x = xx;
-            y = yy;
-            return true;
-        }
-        return false;
     }
 
     boolean findInjuredNear(int startX, int startY) {
@@ -215,84 +204,94 @@ public class SeaBattleAlg {
             dirY = true;
         } else if (checkValue(startX, startY + 1, FieldDot.HIT)) {
             dirY = true;
-        } else if (checkValue(startX-1, startY, FieldDot.UNKNOWN)) {
-            x = startX - 1;
-            y = startY;
+        } else if (checkValue(startX + 1, startY, FieldDot.UNKNOWN)) {
+            fireX = startX + 1;
+            fireY = startY;
             return true;
-        } else if (checkValue(startX+1, startY, FieldDot.UNKNOWN)) {
-            x = startX + 1;
-            y = startY;
+        } else if (checkValue(startX, startY + 1, FieldDot.UNKNOWN)) {
+            fireX = startX;
+            fireY = startY + 1;
             return true;
-        } else if (checkValue(startX, startY-1, FieldDot.UNKNOWN)) {
-            x = startX;
-            y = startY - 1;
+        } else if (checkValue(startX - 1, startY, FieldDot.UNKNOWN)) {
+            fireX = startX - 1;
+            fireY = startY;
             return true;
-        } else if (checkValue(startX, startY+1, FieldDot.UNKNOWN)) {
-            x = startX;
-            y = startY + 1;
+        } else if (checkValue(startX, startY - 1, FieldDot.UNKNOWN)) {
+            fireX = startX;
+            fireY = startY - 1;
             return true;
         } else return false;
-        System.out.println("x="+dirX+" y="+dirY);
+        //System.out.println("x=" + dirX + " y=" + dirY);
         if (dirX) {
-            y = startY;
-            if (checkValue(startX - 1, y, FieldDot.UNKNOWN)) {
-                x = startX - 1;
+            fireY = startY;
+            if (checkValue(startX - 1, fireY, FieldDot.UNKNOWN)) {
+                fireX = startX - 1;
                 return true;
             }
-            if (checkValue(startX - 1, y, FieldDot.HIT)) {
-                if (checkValue(startX - 2, y, FieldDot.UNKNOWN)) {
-                    x = startX - 2;
+            if (checkValue(startX - 1, fireY, FieldDot.HIT)) {
+                if (checkValue(startX - 2, fireY, FieldDot.UNKNOWN)) {
+                    fireX = startX - 2;
                     return true;
                 }
-                if (checkValue(startX - 2, y, FieldDot.HIT) && checkValue(startX - 3, y, FieldDot.UNKNOWN)) {
-                    x = startX - 3;
+                if (checkValue(startX - 2, fireY, FieldDot.HIT) && checkValue(startX - 3, fireY, FieldDot.UNKNOWN)) {
+                    fireX = startX - 3;
                     return true;
                 }
             }
-            if (checkValue(startX + 1, y, FieldDot.UNKNOWN)) {
-                x = startX + 1;
+            if (checkValue(startX + 1, fireY, FieldDot.UNKNOWN)) {
+                fireX = startX + 1;
                 return true;
             }
-            if (checkValue(startX + 1, y, FieldDot.HIT)) {
-                if (checkValue(startX + 2, y, FieldDot.UNKNOWN)) {
-                    x = startX + 2;
+            if (checkValue(startX + 1, fireY, FieldDot.HIT)) {
+                if (checkValue(startX + 2, fireY, FieldDot.UNKNOWN)) {
+                    fireX = startX + 2;
                     return true;
                 }
-                if (checkValue(startX + 2, y, FieldDot.HIT) && checkValue(startX + 3, y, FieldDot.UNKNOWN)) {
-                    x = startX + 3;
+                if (checkValue(startX + 2, fireY, FieldDot.HIT) && checkValue(startX + 3, fireY, FieldDot.UNKNOWN)) {
+                    fireX = startX + 3;
                     return true;
                 }
             }
         } else if (dirY) {
-            x = startX;
-            if (checkValue(x, startY - 1, FieldDot.UNKNOWN)) {
-                y = startY - 1;
+            fireX = startX;
+            if (checkValue(fireX, startY - 1, FieldDot.UNKNOWN)) {
+                fireY = startY - 1;
                 return true;
             }
-            if (checkValue(x, startY - 1, FieldDot.HIT)) {
-                if (checkValue(x, startY - 2, FieldDot.UNKNOWN)) {
-                    y = startY - 2;
+            if (checkValue(fireX, startY - 1, FieldDot.HIT)) {
+                if (checkValue(fireX, startY - 2, FieldDot.UNKNOWN)) {
+                    fireY = startY - 2;
                     return true;
                 }
-                if (checkValue(x, startY - 2, FieldDot.HIT) && checkValue(x, startY - 3, FieldDot.UNKNOWN)) {
-                    y = startY - 3;
+                if (checkValue(fireX, startY - 2, FieldDot.HIT) && checkValue(fireX, startY - 3, FieldDot.UNKNOWN)) {
+                    fireY = startY - 3;
                     return true;
                 }
             }
-            if (checkValue(x, startY + 1, FieldDot.UNKNOWN)) {
-                y = startY + 1;
+            if (checkValue(fireX, startY + 1, FieldDot.UNKNOWN)) {
+                fireY = startY + 1;
                 return true;
             }
-            if (checkValue(x, startY + 1, FieldDot.HIT)) {
-                if (checkValue(x, startY + 2, FieldDot.UNKNOWN)) {
-                    y = startY + 2;
+            if (checkValue(fireX, startY + 1, FieldDot.HIT)) {
+                if (checkValue(fireX, startY + 2, FieldDot.UNKNOWN)) {
+                    fireY = startY + 2;
                     return true;
                 }
-                if (checkValue(x, startY + 2, FieldDot.HIT) && checkValue(x, startY + 3, FieldDot.UNKNOWN)) {
-                    y = startY + 3;
+                if (checkValue(fireX, startY + 2, FieldDot.HIT) && checkValue(fireX, startY + 3, FieldDot.UNKNOWN)) {
+                    fireY = startY + 3;
                     return true;
                 }
             }
+        }
+        return false;
+    }
+
+
+    boolean tryDot(int xx, int yy) {
+        if (checkValue(xx, yy, FieldDot.UNKNOWN)) {
+            fireX = xx;
+            fireY = yy;
+            return true;
         }
         return false;
     }
@@ -306,6 +305,58 @@ public class SeaBattleAlg {
         return false;
     }
 
+    boolean findFirstMaxShipX(int lastEmpty, int xx, int yy, int shipSize) {
+        int freeSpace = xx - lastEmpty;
+        if (freeSpace >= shipSize) {
+            fireY = yy;
+            if (shipSize > 1) {
+                if (freeSpace == shipSize || freeSpace > shipSize && freeSpace % (shipSize - 1) != 1) {
+                    fireX = lastEmpty + shipSize - 1;
+                    if (freeSpace == shipSize && shipSize > 2) {
+                        fireX--;
+                    }
+                    if(yy % 2 == 0) {
+                        if(fireX % 2 == 0) { fireX--; }
+                    } else {
+                        if(fireX % 2 != 0) { fireX--; }
+                    }
+                    return true;
+                }
+            }
+            fireX = lastEmpty + shipSize - 1;
+            return true;
+        }
+        return false;
+    }
+    boolean findFirstMaxShipY(int lastEmpty, int xx, int yy, int shipSize) {
+        int freeSpace = yy - lastEmpty;
+        if (freeSpace >= shipSize) {
+            fireX = xx;
+            if (shipSize > 1) {
+                //System.out.println("lastEmpty="+lastEmpty+" freeSpace="+freeSpace+" shipSize="+shipSize+" freeSpace="+freeSpace);
+                if (freeSpace == shipSize || freeSpace > shipSize && freeSpace % (shipSize - 1) != 1) {
+                    //System.out.println("xx="+xx+" yy="+yy);
+                    fireY = lastEmpty + shipSize - 1;
+                    if (freeSpace == shipSize && shipSize > 2) {
+                        fireY--;
+                    }
+                    if (xx % 2 == 0) {
+                        if (fireY % 2 == 0) {
+                            fireY--;
+                        }
+                    } else {
+                        if (fireY % 2 != 0) {
+                            fireY--;
+                        }
+                    }
+                    return true;
+                }
+            }
+            fireY = lastEmpty + shipSize - 1;
+            return true;
+        }
+        return false;
+    }
     boolean findFirstMaxShip() {
         int shipSize = field.maxShip;
         int lastEmpty;
@@ -313,19 +364,19 @@ public class SeaBattleAlg {
             lastEmpty = 0;
             for (int xx = 0; xx < field.maxX; xx++)
                 if (field.field[xx][yy] != FieldDot.UNKNOWN) {
-                    int freeSpace = xx - lastEmpty;
-                    if (freeSpace >= shipSize) {
-                        y = yy;
-                        if(shipSize>1) {
-                            if (freeSpace == shipSize || freeSpace > shipSize && freeSpace % (shipSize-1) == 1) { //?
-                                x = lastEmpty + shipSize - 1 - y % 2;
-                            }
-                        }
-                        x = lastEmpty + shipSize - 1;
-                        return true;
-                    }
+                    if(findFirstMaxShipX(lastEmpty, xx, yy, shipSize)) return true;
                     lastEmpty = xx + 1;
                 }
+            if(findFirstMaxShipX(lastEmpty, field.maxX, yy, shipSize)) return true;
+        }
+        for (int xx = 0; xx < field.maxX; xx++) {
+            lastEmpty = 0;
+            for (int yy = 0; yy < field.maxY; yy++)
+                if (field.field[xx][yy] != FieldDot.UNKNOWN) {
+                    if(findFirstMaxShipY(lastEmpty, xx, yy, shipSize)) return true;
+                    lastEmpty = yy + 1;
+                }
+            if(findFirstMaxShipY(lastEmpty, xx, field.maxY, shipSize)) return true;
         }
         return false;
     }
@@ -334,8 +385,8 @@ public class SeaBattleAlg {
         for (int yy = 0; yy < field.maxY; yy++)
             for (int xx = 0; xx < field.maxX; xx++)
                 if (field.field[xx][yy] == FieldDot.UNKNOWN) {
-                    x = xx;
-                    y = yy;
+                    fireX = xx;
+                    fireY = yy;
                     return true;
                 }
         return false;
@@ -345,68 +396,74 @@ public class SeaBattleAlg {
         //самая заполненная клетка — A3 (и симметричные ей) — на них корабли есть в 475795243932227 случаях (25.6%),
         // самая незаполненная — Б2 (и симметричные) — она заполнена в 273993917558420 случаях (14.7%)
         field = new Field(seaBattle);
-        phase = 10;
-        findInjured = false;
-        boolean fire = true;
+        int phase = 10;
+        boolean findInjured = false;
+        boolean fire;
         int iter = 0;
-        x = 0;
-        y = 0;
+        fireX = 0;
+        fireY = 0;
         int injX = 0, injY = 0;
         while (phase >= 0) {
             iter++;
-            System.out.println("="+iter+"=");
+            //System.out.println("=" + iter + "=");
             fire = false;
             if (findInjured) {
-                System.out.println("findInjuredNear ()");
+                //System.out.println("findInjuredNear()");
                 if (findInjuredNear(injX, injY)) fire = true;
                 //else findInjured = false;
             }
             if (!fire && phase == 10) {
-                System.out.println("findPopular()");
-                if (findPopular())fire = true;
+                //System.out.println("findPopular()");
+                if (findPopular()) fire = true;
                 else phase = 20;
             }
             if (!fire && phase == 20) {
-                System.out.println("findFirstMaxShip()");
+                //System.out.println("findFirstMaxShip()");
                 if (findFirstMaxShip()) fire = true;
             }
             if (!fire) {
-                System.out.println("findFirstEmpty()");
-                //if (findFirstEmpty()) fire = true;
+                //System.out.println("findFirstEmpty()");
+                if (findFirstEmpty()) fire = true;
             }
             if (fire) {
-                field.mark(x, y, seaBattle.fire(x, y));
+                //System.out.println("fireX="+fireX+" fireY="+fireY);
+                field.mark(fireX, fireY, seaBattle.fire(fireX, fireY));
                 if (findInjured) {
-                    findInjured = field.field[x][y] != FieldDot.DESTROYED;
+                    findInjured = field.field[fireX][fireY] != FieldDot.DESTROYED;
                 } else {
-                    findInjured = field.field[x][y] == FieldDot.HIT;
+                    findInjured = field.field[fireX][fireY] == FieldDot.HIT;
                     if (findInjured) {
-                        injX = x;
-                        injY = y;
+                        injX = fireX;
+                        injY = fireY;
                     }
                 }
-                if (field.field[x][y] != FieldDot.MISS)
+                if (field.field[fireX][fireY] != FieldDot.MISS)
                     if (!field.isShipsLeft()) phase = -1;
             } else
                 phase = -2;
-            if(iter>15) {
+            /*if (iter > 20) {
                 System.out.println(field);
                 try {
                     System.in.read();
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-            }
+            }*/
         }
-        System.out.println(field);
-        System.out.println("iteration="+iter+" phase="+phase);
-    }//152->172
+        //System.out.println(field);
+        //System.out.println("iteration=" + iter + " phase=" + phase);
+    }
 
+    public void battleAlgorithm(SeaBattle seaBattle) {
+        //battleAlgorithm0(seaBattle);//100
+        //battleAlgorithm1(seaBattle);//142->114
+        battleAlgorithm2(seaBattle);//152->172->166
+    }
 
     // функция для отладки
     public static void main(String[] args) {
-        SeaBattle seaBattle = new SeaBattle(true);
-        //SeaBattle seaBattle = new SeaBattle();
+        //SeaBattle seaBattle = new SeaBattle(true);
+        SeaBattle seaBattle = new SeaBattle();
         new SeaBattleAlg().battleAlgorithm(seaBattle);
         System.out.println(seaBattle.getResult());
     }
