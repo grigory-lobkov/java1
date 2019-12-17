@@ -176,11 +176,11 @@ public class SeaBattleAlg {
     public void battleAlgorithm1(SeaBattle seaBattle) {
         Field field = new Field(seaBattle);
         for (int y = 0; y < seaBattle.getSizeX(); y++) {
-            for (int x = 0; x < seaBattle.getSizeY(); x++) {
+            for (int x = 0; x < seaBattle.getSizeY(); x++)
+                //if (field.field[x][y] == FieldDot.UNKNOWN)
                 if (field.field[x][y] == FieldDot.UNKNOWN || y % 2 == 0)
                     field.mark(x, y, seaBattle.fire(x, y));
-            }
-            if (y > 5) System.out.println(field);
+            //if (y > 5) System.out.println(field);
         }
     }
 
@@ -396,7 +396,7 @@ public class SeaBattleAlg {
         //самая заполненная клетка — A3 (и симметричные ей) — на них корабли есть в 475795243932227 случаях (25.6%),
         // самая незаполненная — Б2 (и симметричные) — она заполнена в 273993917558420 случаях (14.7%)
         field = new Field(seaBattle);
-        int phase = 10;
+        int phase = 20;
         boolean findInjured = false;
         boolean fire;
         int iter = 0;
@@ -456,15 +456,31 @@ public class SeaBattleAlg {
 
     public void battleAlgorithm(SeaBattle seaBattle) {
         //battleAlgorithm0(seaBattle);//100
-        //battleAlgorithm1(seaBattle);//142->114
-        battleAlgorithm2(seaBattle);//152->172->166
+        //battleAlgorithm1(seaBattle);//152->123
+        battleAlgorithm2(seaBattle);//180
+    }
+
+    public static double fight() {
+        SeaBattle b = new SeaBattle();
+        SeaBattleAlg ba = new SeaBattleAlg();
+        ba.battleAlgorithm(b);
+        double result = b.getResult();
+        if (result==0) System.out.println(ba.field);
+        return result;
+    }
+    public static double fightMany(int count) {
+        double sum = 0.0;
+        for(int i = count; i>0; i--) sum += fight();
+        return ((int)(sum / count * 100))/100;
     }
 
     // функция для отладки
     public static void main(String[] args) {
-        //SeaBattle seaBattle = new SeaBattle(true);
+        /*SeaBattle seaBattle = new SeaBattle(true);
         SeaBattle seaBattle = new SeaBattle();
         new SeaBattleAlg().battleAlgorithm(seaBattle);
-        System.out.println(seaBattle.getResult());
+        System.out.println(seaBattle.getResult());*/
+        System.out.println(fight());
+        //System.out.println(fightMany(10000));
     }
 }
