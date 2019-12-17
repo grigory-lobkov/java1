@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -81,10 +81,10 @@ class User {
 }
 
     public TreeSet<User> createSet() {
-        TreeSet<User> result = new TreeSet<User>(new Comparable<User>(){
+        TreeSet<User> result = new TreeSet<User>(new Comparator<User>() {
             @Override
-            public int compareTo(User o) {
-                return -Integer.compare(o.id);
+            public int compare(User o1, User o2) {
+                return Integer.compare(o2.id, o1.id);
             }
         });
         return result;
