@@ -1,12 +1,13 @@
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Lesson12 {
     //Реализуйте метод,с сигнатурой public Set<Integer> a2set(int[] a), который преобразует массив в множество
     public Set<Integer> a2set(int[] a) {
-        Set<Integer> result = new HashSet();
-        for (int i : a) result.add(new Integer(i));
+        Set<Integer> result = new HashSet<>();
+        for (int i : a) result.add(i);
         return result;
     }
 
@@ -25,7 +26,6 @@ public class Lesson12 {
             if (fig.getClass() == Round.class) return "Диаметр круга " + ((Round) fig).getDiameter();
             return "Неизвестная фигура";
         }
-
     }
 
     class Square extends Figure {
@@ -56,5 +56,38 @@ public class Lesson12 {
  - для квадрата возвращает "Сторона квадрата "+.side
 - для круга возвращает "Диаметр круга "+.diameter
 - для всех остальных классов "Неизвестная фигура"*/
+
+/*Определен класс
+
+    class User {
+        public Integer id;
+        public String name;
+        User (Integer id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
+
+    Создайте метод с сигнатурой public TreeSet<User> createSet() который
+    создает и возвращает TreeSet так, что бы пользователи оказались упорядочены по убыванию id
+*/
+class User {
+    public Integer id;
+    public String name;
+    User (Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+
+    public TreeSet<User> createSet() {
+        TreeSet<User> result = new TreeSet<User>(new Comparable<User>(){
+            @Override
+            public int compareTo(User o) {
+                return -Integer.compare(o.id);
+            }
+        });
+        return result;
+    }
 
 }
