@@ -204,14 +204,10 @@ public class SeaBattleAlg {
             dirY = true;
         } else if (checkValue(startX, startY + 1, FieldDot.HIT)) {
             dirY = true;
-        } else if (checkValue(startX + 1, startY, FieldDot.UNKNOWN)) {
-            fireX = startX + 1;
-            fireY = startY;
-            return true;
-        } else if (checkValue(startX, startY + 1, FieldDot.UNKNOWN)) {
-            fireX = startX;
-            fireY = startY + 1;
-            return true;
+/*        } else if (checkValue(startX + 1, startY, FieldDot.UNKNOWN)) { fireX = startX + 1; fireY = startY; return true;
+        } else if (checkValue(startX, startY + 1, FieldDot.UNKNOWN)) { fireX = startX; fireY = startY + 1; return true;
+        } else if (checkValue(startX - 1, startY, FieldDot.UNKNOWN)) { fireX = startX - 1; fireY = startY; return true;
+        } else if (checkValue(startX, startY - 1, FieldDot.UNKNOWN)) { fireX = startX; fireY = startY - 1; return true;*/
         } else if (checkValue(startX - 1, startY, FieldDot.UNKNOWN)) {
             fireX = startX - 1;
             fireY = startY;
@@ -219,6 +215,14 @@ public class SeaBattleAlg {
         } else if (checkValue(startX, startY - 1, FieldDot.UNKNOWN)) {
             fireX = startX;
             fireY = startY - 1;
+            return true;
+        } else if (checkValue(startX + 1, startY, FieldDot.UNKNOWN)) {
+            fireX = startX + 1;
+            fireY = startY;
+            return true;
+        } else if (checkValue(startX, startY + 1, FieldDot.UNKNOWN)) {
+            fireX = startX;
+            fireY = startY + 1;
             return true;
         } else return false;
         //System.out.println("x=" + dirX + " y=" + dirY);
@@ -358,6 +362,7 @@ public class SeaBattleAlg {
         return false;
     }
     boolean findFirstMaxShip() {
+        if (field.maxShip < 2) return false;
         int shipSize = field.maxShip;
         int lastEmpty;
         for (int yy = 0; yy < field.maxY; yy++) {
@@ -382,7 +387,7 @@ public class SeaBattleAlg {
     }
 
     boolean findFirstEmpty() {
-        for (int yy = 0; yy < field.maxY; yy++)
+        for (int yy = field.maxY - 1; yy >= 0; yy--)
             for (int xx = 0; xx < field.maxX; xx++)
                 if (field.field[xx][yy] == FieldDot.UNKNOWN) {
                     fireX = xx;
@@ -392,11 +397,78 @@ public class SeaBattleAlg {
         return false;
     }
 
+    boolean findDiagonal4() {
+        if (field.maxShip < 4) return false;
+        for (int yy = 0; yy < field.maxY; yy++)
+            for (int xx = (field.maxY + 1 - yy) % 4; xx < field.maxX; xx += 4)
+                if (field.field[xx][yy] == FieldDot.UNKNOWN) {
+                    fireX = xx;
+                    fireY = yy;
+                    return true;
+                }
+        return false;
+    }
+
+    boolean findDiagonal2() {
+        if (field.maxShip < 2) return false;
+        for (int yy = 0; yy < field.maxY; yy++)
+            for (int xx = (field.maxY + 1 - yy) % 2; xx < field.maxX; xx += 4)
+                if (field.field[xx][yy] == FieldDot.UNKNOWN) {
+                    fireX = xx;
+                    fireY = yy;
+                    return true;
+                }
+        return false;
+    }
+
+    int mat4X;
+    int mat4Y;
+
+    boolean findFeet4() {
+        for (int my = 0; my <= mat4X; my++) {
+            int m4y = my * 4;
+            for (int mx = 0; mx <= mat4Y; mx++) {
+                int m4x = mx * 4;
+                if (tryDot(m4x + 0, m4y + 2) || tryDot(m4x + 1, m4y + 3)
+                        || tryDot(m4x + 2, m4y + 1) || tryDot(m4x + 3, m4y + 0)
+                ) return true;
+            }
+        }
+        return false;
+    }
+
+    boolean findFeet3() {
+        for (int my = 0; my <= mat4X; my++) {
+            int m4y = my * 4;
+            for (int mx = 0; mx <= mat4Y; mx++) {
+                int m4x = mx * 4;
+                if (tryDot(m4x + 1, m4y + 0) || tryDot(m4x + 3, m4y + 2)
+                ) return true;
+            }
+        }
+        return false;
+    }
+
+    boolean findFeet2() {
+        for (int my = 0; my <= mat4X; my++) {
+            int m4y = my * 4;
+            for (int mx = 0; mx <= mat4Y; mx++) {
+                int m4x = mx * 4;
+                if (tryDot(m4x + 0, m4y + 1) || tryDot(m4x + 1, m4y + 2)
+                        || tryDot(m4x + 2, m4y + 3)
+                ) return true;
+            }
+        }
+        return false;
+    }
+
     public void battleAlgorithm2(SeaBattle seaBattle) {
         //самая заполненная клетка — A3 (и симметричные ей) — на них корабли есть в 475795243932227 случаях (25.6%),
         // самая незаполненная — Б2 (и симметричные) — она заполнена в 273993917558420 случаях (14.7%)
         field = new Field(seaBattle);
-        int phase = 20;
+        mat4X = (field.maxY - 1) / 4;
+        mat4Y = (field.maxY - 1) / 4;
+        int phase = 11;
         boolean findInjured = false;
         boolean fire;
         int iter = 0;
@@ -415,9 +487,34 @@ public class SeaBattleAlg {
             if (!fire && phase == 10) {
                 //System.out.println("findPopular()");
                 if (findPopular()) fire = true;
-                else phase = 20;
+                else phase = 11;
             }
-            if (!fire && phase == 20) {
+            if (!fire && phase == 11) {//181
+                //System.out.println("findDiagonal4()");
+                if (findDiagonal4()) fire = true;
+                else phase = 50;
+            }
+            if (!fire && phase == 12) {
+                //System.out.println("findDiagonal2()");
+                if (findDiagonal2()) fire = true;
+                else phase = 50;
+            }
+            if (!fire && phase == 20) { //178
+                //System.out.println("findFeet4()");
+                if (findFeet4()) fire = true;
+                else phase = 21;
+            }
+            if (!fire && phase == 21) {
+                //System.out.println("findFeet3()");
+                if (findFeet3()) fire = true;
+                else phase = 22;
+            }
+            if (!fire && phase == 22) {
+                //System.out.println("findFeet2()");
+                if (findFeet2()) fire = true;
+                else phase = 99;
+            }
+            if (!fire && phase == 50) {
                 //System.out.println("findFirstMaxShip()");
                 if (findFirstMaxShip()) fire = true;
             }
@@ -439,9 +536,10 @@ public class SeaBattleAlg {
                 }
                 if (field.field[fireX][fireY] != FieldDot.MISS)
                     if (!field.isShipsLeft()) phase = -1;
-            } else
+            } else {
                 phase = -2;
-            /*if (iter > 20) {
+            }
+            /*if (iter > 10) {
                 System.out.println(field);
                 try {
                     System.in.read();
@@ -470,8 +568,8 @@ public class SeaBattleAlg {
     }
     public static double fightMany(int count) {
         double sum = 0.0;
-        for(int i = count; i>0; i--) sum += fight();
-        return ((int)(sum / count * 100))/100;
+        for (int i = count; i > 0; i--) sum += fight();
+        return (double) ((int) (sum / (double) count * 100)) / 100;
     }
 
     // функция для отладки
@@ -480,7 +578,7 @@ public class SeaBattleAlg {
         SeaBattle seaBattle = new SeaBattle();
         new SeaBattleAlg().battleAlgorithm(seaBattle);
         System.out.println(seaBattle.getResult());*/
-        System.out.println(fight());
-        //System.out.println(fightMany(10000));
+        //System.out.println(fight());
+        System.out.println(fightMany(1000000));//180.17->181.25->181.46->182.27
     }
 }
