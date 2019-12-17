@@ -204,10 +204,6 @@ public class SeaBattleAlg {
             dirY = true;
         } else if (checkValue(startX, startY + 1, FieldDot.HIT)) {
             dirY = true;
-/*        } else if (checkValue(startX + 1, startY, FieldDot.UNKNOWN)) { fireX = startX + 1; fireY = startY; return true;
-        } else if (checkValue(startX, startY + 1, FieldDot.UNKNOWN)) { fireX = startX; fireY = startY + 1; return true;
-        } else if (checkValue(startX - 1, startY, FieldDot.UNKNOWN)) { fireX = startX - 1; fireY = startY; return true;
-        } else if (checkValue(startX, startY - 1, FieldDot.UNKNOWN)) { fireX = startX; fireY = startY - 1; return true;*/
         } else if (checkValue(startX - 1, startY, FieldDot.UNKNOWN)) {
             fireX = startX - 1;
             fireY = startY;
