@@ -24,14 +24,25 @@ public class SetOperations {
     }
 
     public static Set<Integer> intersection(Set<Integer> set1, Set<Integer> set2) {
-
+        if (set1 == null || set2 == null) return new HashSet<Integer>();
+        Set<Integer> result = new HashSet<Integer>(set1);
+        result.retainAll(set2);
+        return result;
     }
 
     static Set<Integer> difference(Set<Integer> set1, Set<Integer> set2) {
-
+        if (set1 == null) return new HashSet<Integer>();
+        Set<Integer> result = new HashSet<Integer>(set1);
+        if (set2 != null) result.removeAll(set2);
+        return result;
     }
 
     public static Set<Integer> symDifference(Set<Integer> set1, Set<Integer> set2) {
-
+        Set<Integer> result1 = set1 != null ? new HashSet<Integer>(set1) : new HashSet<Integer>();
+        Set<Integer> result2 = set2 != null ? new HashSet<Integer>(set2) : new HashSet<Integer>();
+        result1.removeAll(result2);
+        result2.removeAll(result1);
+        result1.addAll(result2);
+        return result1;
     }
 }
