@@ -18,7 +18,6 @@ public class SetOperations {
     Кто подзабыл что значит каждая операция, можно глянуть тут https://studopedia.ru/14_138615_operatsii-nad-mnozhestvami-i-ih-svoystva.html или OK - google
     */
     public static Set<Integer> union(Set<Integer> set1, Set<Integer> set2) {
-        if (set1 == null && set2 == null) return new HashSet<Integer>();
         Set<Integer> result = set1 != null ? new HashSet<Integer>(set1) : new HashSet<Integer>();
         if (set2 != null) result.addAll(set2);
         return result;
