@@ -575,6 +575,8 @@ public class SeaBattleAlg {
         new SeaBattleAlg().battleAlgorithm(seaBattle);
         System.out.println(seaBattle.getResult());*/
         //System.out.println(fight());
-        System.out.println(fightMany(1000000));//180.17->181.25->181.46->182.27
+        long startTime = System.currentTimeMillis();
+        System.out.println(fightMany(1000));//180.17->181.25->181.46->182.27
+        System.out.println(System.currentTimeMillis() - startTime); //1000:182ms,1000000:117s
     }
 }
