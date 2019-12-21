@@ -141,9 +141,6 @@ public class ProductAnalytics {
     }
 
     public static void main(String[] args) {
-        //Магазин 1, товары: art-1,art-9,art-10
-        //Магазин 2, товары: art-2,art-3,art-5,art-8
-        //В метод передан список товаров: art-1,art-3,art-4,art-8,art-9
         Product p1 = new Product("art-1");
         Product p2 = new Product("art-2");
         Product p3 = new Product("art-3");
@@ -154,10 +151,27 @@ public class ProductAnalytics {
         Product p8 = new Product("art-8");
         Product p9 = new Product("art-9");
         Product p10 = new Product("art-10");
-        Shop s1 = new Shop(new ArrayList<Product>(Arrays.asList(p1, p9, p10)));
+        //Магазин 1, товары: art-1,art-9,art-10
+        //Магазин 2, товары: art-2,art-3,art-5,art-8
+        //В метод передан список товаров: art-1,art-3,art-4,art-8,art-9
+        /*Shop s1 = new Shop(new ArrayList<Product>(Arrays.asList(p1, p9, p10)));
         Shop s2 = new Shop(new ArrayList<Product>(Arrays.asList(p2, p3, p5, p8)));
         List<Shop> ss = new ArrayList<Shop>(Arrays.asList(s1, s2));
         List<Product> pa = new ArrayList<Product>(Arrays.asList(p1, p3, p4, p8, p9));
+        ProductAnalytics productAnalytics = new ProductAnalytics(pa, ss);
+        System.out.println(productAnalytics.existOnlyInOne());*/
+
+        /*Были созданы следующие магазины:
+        Магазин 1, товары: art-2,art-7,art-8,art-10
+        Магазин 2, товары: art-1,art-4,art-6,art-10
+        Магазин 3, товары: art-1,art-4,art-5,art-10
+                . В метод передан список товаров: art-5,art-7,art-8,art-10
+                .Возвращено множество, содержащее: art-8,art-5,art-7. Ожидалось множество, содержащее: art-8,art-5,art-7,art-10.*/
+        Shop s1 = new Shop(new ArrayList<Product>(Arrays.asList(p2, p7, p8, p10)));
+        Shop s2 = new Shop(new ArrayList<Product>(Arrays.asList(p1, p4, p6, p10)));
+        Shop s3 = new Shop(new ArrayList<Product>(Arrays.asList(p1, p4, p5, p10)));
+        List<Shop> ss = new ArrayList<Shop>(Arrays.asList(s1, s2, s3));
+        List<Product> pa = new ArrayList<Product>(Arrays.asList(p5, p7, p8, p10));
         ProductAnalytics productAnalytics = new ProductAnalytics(pa, ss);
         System.out.println(productAnalytics.existOnlyInOne());
     }
