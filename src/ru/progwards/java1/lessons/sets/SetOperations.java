@@ -40,8 +40,8 @@ public class SetOperations {
     public static Set<Integer> symDifference(Set<Integer> set1, Set<Integer> set2) {
         Set<Integer> result1 = set1 != null ? new HashSet<Integer>(set1) : new HashSet<Integer>();
         Set<Integer> result2 = set2 != null ? new HashSet<Integer>(set2) : new HashSet<Integer>();
-        result1.removeAll(result2);
-        result2.removeAll(result1);
+        result1.removeAll(set2);
+        result2.removeAll(set1);
         result1.addAll(result2);
         return result1;
     }

@@ -1,9 +1,6 @@
 package ru.progwards.java1.lessons.sets;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /*
 2.1 Создать класс Product - товар,
@@ -19,6 +16,11 @@ class Product {
     }
 
     public String getCode() {
+        return code;
+    }
+
+    @Override
+    public String toString() {
         return code;
     }
 }
@@ -77,6 +79,10 @@ public class ProductAnalytics {
     }
 
     //товары из products, которые имеются хотя бы в одном магазине
+    public Set<Product> existAtLeastInOne() {
+        return existAtListInOne();
+    }
+
     public Set<Product> existAtListInOne() {
         if (shops == null || shops.size() == 0) return new HashSet<>();
 
@@ -99,7 +105,7 @@ public class ProductAnalytics {
 
         Iterator it = shops.iterator();
         while (it.hasNext()) {
-            products.retainAll(new HashSet<Product>(((Shop) it.next()).getProducts()));
+            products.removeAll(new HashSet<Product>(((Shop) it.next()).getProducts()));
         }
         return products;
     }
@@ -123,15 +129,37 @@ public class ProductAnalytics {
                     productsBefore.addAll(productsNow);
                 } else if (k == i) {
                     products1 = productsNow;
-                    products1.retainAll(productsBefore);
+                    products1.removeAll(productsBefore);
                 } else {
-                    products1.retainAll(productsNow);
+                    products1.removeAll(productsNow);
                 }
             }
             products.addAll(products1);
         }
 
         return products;
+    }
+
+    public static void main(String[] args) {
+        //Магазин 1, товары: art-1,art-9,art-10
+        //Магазин 2, товары: art-2,art-3,art-5,art-8
+        //В метод передан список товаров: art-1,art-3,art-4,art-8,art-9
+        Product p1 = new Product("art-1");
+        Product p2 = new Product("art-2");
+        Product p3 = new Product("art-3");
+        Product p4 = new Product("art-4");
+        Product p5 = new Product("art-5");
+        Product p6 = new Product("art-6");
+        Product p7 = new Product("art-7");
+        Product p8 = new Product("art-8");
+        Product p9 = new Product("art-9");
+        Product p10 = new Product("art-10");
+        Shop s1 = new Shop(new ArrayList<Product>(Arrays.asList(p1, p9, p10)));
+        Shop s2 = new Shop(new ArrayList<Product>(Arrays.asList(p2, p3, p5, p8)));
+        List<Shop> ss = new ArrayList<Shop>(Arrays.asList(s1, s2));
+        List<Product> pa = new ArrayList<Product>(Arrays.asList(p1, p3, p4, p8, p9));
+        ProductAnalytics productAnalytics = new ProductAnalytics(pa, ss);
+        System.out.println(productAnalytics.existOnlyInOne());
     }
 
 }
