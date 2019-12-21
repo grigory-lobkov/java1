@@ -1,3 +1,5 @@
+package ru.progwards.java1.lessons.sets;
+
 import java.util.*;
 
 public class Lesson12 {
@@ -54,28 +56,28 @@ public class Lesson12 {
 - для круга возвращает "Диаметр круга "+.diameter
 - для всех остальных классов "Неизвестная фигура"*/
 
-/*Определен класс
+    /*Определен класс
 
-    class User {
+        class User {
+            public Integer id;
+            public String name;
+            User (Integer id, String name) {
+                this.id = id;
+                this.name = name;
+            }
+        }
+
+        Создайте метод с сигнатурой public TreeSet<User> createSet() который
+        создает и возвращает TreeSet так, что бы пользователи оказались упорядочены по убыванию id
+    */
+class User {
         public Integer id;
         public String name;
-        User (Integer id, String name) {
+
+        User(Integer id, String name) {
             this.id = id;
             this.name = name;
         }
-    }
-
-    Создайте метод с сигнатурой public TreeSet<User> createSet() который
-    создает и возвращает TreeSet так, что бы пользователи оказались упорядочены по убыванию id
-*/
-class User {
-    public Integer id;
-    public String name;
-
-    User(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }
 
     public TreeSet<User> createSet() {
