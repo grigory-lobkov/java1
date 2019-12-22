@@ -36,8 +36,18 @@ public class Lesson13 {
     }
 
     public static void main(String[] args) {
-        //new Lesson13().dequeueTest();
-        //new Lesson13().pqTest();
+        new Lesson13().dequeueTest();
+        new Lesson13().pqTest();
         System.out.println(new Lesson13().array2queue(new int[]{4, 2, 1}));
     }
+
+    /*
+    Реализуйте метод с сигнатурой int sumLastAndFirst(ArrayDeque<Integer> deque)
+    который возвращает сумму первого и последнего элемента очереди. При пустой очереди вернуть 0
+    */
+    int sumLastAndFirst(ArrayDeque<Integer> deque) {
+        if (deque.isEmpty()) return 0;
+        return deque.peekFirst() + deque.peekLast();
+    }
+
 }
