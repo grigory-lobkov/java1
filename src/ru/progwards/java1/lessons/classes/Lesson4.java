@@ -99,12 +99,12 @@ class Calculator {
 переопределение функции toString(), которая должна возвращать результат в формате х,у,z,
 например 23,12,37 и вызывать функцию toString() родителя внутри себя
 */
-class Point2D {
+class Point2D1 {
 
     int x;
     int y;
 
-    Point2D(int x, int y) {
+    Point2D1(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -113,16 +113,50 @@ class Point2D {
         return x + "," + y;
     }
 }
-class Point3D extends Point2D {
+
+class Point3D1 extends Point2D1 {
 
     int z;
 
-    Point3D(int x, int y, int z) {
+    Point3D1(int x, int y, int z) {
         super(x, y);
         this.z = z;
     }
     @Override
     public String toString() {
-        return x + "," + y + "," + z;
+        return super.toString() + "," + z;
+    }
+}
+
+class Point2D {
+    private int x;
+    private int y;
+
+    Point2D(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        String dv = Integer.toString(x) + "," + Integer.toString(y);
+        return dv;
+    }
+
+}
+
+
+class Point3D extends Point2D {
+    private int z;
+
+    Point3D(int x, int y, int z) {
+        super(x, y);
+        this.z = z;
+    }
+
+    @Override
+    public String toString() {
+        String dv = super.toString() + "," + Integer.toString(z);
+        return dv;
     }
 }
