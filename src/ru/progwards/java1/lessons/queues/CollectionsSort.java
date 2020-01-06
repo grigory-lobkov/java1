@@ -2,10 +2,7 @@ package ru.progwards.java1.lessons.queues;
 
 import jdk.jfr.DataAmount;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class CollectionsSort {
 /*    Сравнение методов сортировки коллекций
@@ -52,12 +49,42 @@ public class CollectionsSort {
             while (it2.hasNext()) {
                 num2 = it2.next();
                 if (num1.compareTo(num2) > 0) {
-                    Collections.swap((List)data, idx1, idx2);
+                    Collections.swap((List)data, idx1, idx2); // List!? ... а как иначе их поменять местами, не понимаю
                     num1 = num2;
                 }
                 idx2++;
             }
             idx1++;
         }
+    }
+
+    public static void minSort(Collection<Integer> data) {
+/*
+- создать новую коллекцию
+- найти минимальный элемент с использованием функции min()
+- переместить его в новую коллекцию
+- делать так до тех пор, пока все элементы не окажутся в новой коллекции
+- скопировать новую коллекцию в старую
+*/
+        ArrayList<Integer> list = new ArrayList(data);
+        ArrayList<Integer> result = new ArrayList(data.size());
+
+        while (list.size() > 0) {
+            Integer min = Collections.min(list);
+            result.add(min);
+            list.remove(min);
+        }
+
+        data.clear();
+        data.addAll(result);
+    }
+
+    public static void collSort(Collection<Integer> data){
+        Collections.sort((List)data);
+    }
+
+    public static Collection<String> compareSort() {
+        //сравнить производительность методов и вернуть их имена, отсортированные в порядке производительности,
+        // первый - самый быстрый. В случае равенства производительности первым вернуть "collSort"
     }
 }
