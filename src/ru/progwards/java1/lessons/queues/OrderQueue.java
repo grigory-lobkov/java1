@@ -68,9 +68,11 @@ public class OrderQueue {
 
     public static void main(String[] args) {
         OrderQueue oq = new OrderQueue();
+        oq.add(new Order(45000));
         oq.add(new Order(15000));
+        oq.add(new Order(10001));
         oq.add(new Order(10000));
-        oq.add(new Order(05000));
+        oq.add(new Order(5000));
         oq.add(new Order(25000));
         Order o = oq.get();
         while (o != null) {
