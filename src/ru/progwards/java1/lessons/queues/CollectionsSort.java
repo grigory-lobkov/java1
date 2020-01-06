@@ -5,6 +5,7 @@ import jdk.jfr.DataAmount;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 public class CollectionsSort {
 /*    Сравнение методов сортировки коллекций
@@ -26,8 +27,9 @@ public class CollectionsSort {
 равенства производительности первым вернуть "collSort".
 */
 
-    public static void mySort(Collection<Integer> data){ // буду реализовывать простейший ArraySort.sort3, т.к. эту функцию использовать не предвидится
+    public static void mySort(Collection<Integer> data) { // буду реализовывать простейший ArraySort.sort3, т.к. эту функцию использовать не предвидится
         // лучше бы, конечно, не делать лишних свопов в типах коллекций, где доступ по индексу осуществляется быстро
+        /*
         for (int i = 0; i < data.size(); i++) {
             // найдем в остатках максимальный
             for (int j = i + 1; j < data.size(); j++) {
@@ -38,19 +40,22 @@ public class CollectionsSort {
                 }
             }
         }
+        */
         Iterator<Integer> it1 = data.iterator();
-        int idx1=0;
-        while(it1.hasNext()) {
+        int idx1 = 0;
+        while (it1.hasNext()) {
             Integer num1 = it1.next();
-            Iterator<Integer> i2 = data.iterator();
-            int idx2=0;
+            Iterator<Integer> it2 = data.iterator();
+            int idx2 = 0;
             Integer num2;
-            for (Iterator<Integer> i2 = data.iterator(); i2.hasNext(); ) {
-                Integer num2 = i2.next();
-                if(num1.compareTo(num2)>0) {
-                    Collections.swap(data,idx1,idx2);
+            for (int i = idx1; i >= 0; i--) it2.next();
+            while (it2.hasNext()) {
+                num2 = it2.next();
+                if (num1.compareTo(num2) > 0) {
+                    Collections.swap((List)data, idx1, idx2);
                     num1 = num2;
                 }
+                idx2++;
             }
             idx1++;
         }
