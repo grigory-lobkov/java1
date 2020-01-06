@@ -1,3 +1,5 @@
+package ru.progwards.java1.lessons.queues;
+
 import java.util.ArrayDeque;
 import java.util.PriorityQueue;
 
