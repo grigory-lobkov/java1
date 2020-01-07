@@ -47,19 +47,23 @@ public class CollectionsSort {
         int idx1 = 0;
         while (it1.hasNext()) {
             Integer num1 = it1.next();
+            //System.out.println("num1="+num1);
             Iterator<Integer> it2 = data.iterator();
-            int idx2 = 0;
             Integer num2;
             for (int i = idx1; i >= 0; i--) it2.next();
+            int idx2 = idx1 + 1;
             while (it2.hasNext()) {
                 num2 = it2.next();
+                //System.out.println("num2="+num2);
                 if (num1.compareTo(num2) > 0) {
                     Collections.swap((List)data, idx1, idx2); // List!? ... а как иначе их поменять местами, не понимаю
                     num1 = num2;
+                    //System.out.println("swap idx1="+idx1+" idx2="+idx2);
                 }
                 idx2++;
             }
             idx1++;
+            //System.out.println(data);
         }
     }
 
@@ -161,7 +165,7 @@ public class CollectionsSort {
         long t3 = 0;
         long t2 = 0;
         long t1 = 0;
-        for (int cnt = 1; cnt <= 2; cnt++) {
+        for (int cnt = 0; cnt < 3; cnt++) {
             Integer[] c1 = new Integer[5_000];
             randomFill(c1, 5_000, -5_000);
             int cCnt = 1;
@@ -184,7 +188,7 @@ public class CollectionsSort {
             t1 += time1 - time0;
             t2 += time2 - time1;
             t3 += time3 - time2;
-            System.out.println(t1 + " " + t2 + " " + t3);
+            //System.out.println(t1/1000 + " " + t2/1000 + " " + t3/1000);
         }
 
         ArrayList<Experiment> exp = new ArrayList<Experiment>(3);
