@@ -104,7 +104,7 @@ public class CollectionsSort {
     }
 
     public static void randomFill(Integer[] a, int from, int to) {
-        for (int i = a.length - 1; i >= 0; i--) a[i] = (int) ((to + from) * Math.random()) + from;
+        for (int i = a.length - 1; i >= 0; i--) a[i] = (int) (Math.random() * (to - from)) + from;
     }
 
     public static Collection<String> compareSort1() {
@@ -184,7 +184,7 @@ public class CollectionsSort {
             t1 += time1 - time0;
             t2 += time2 - time1;
             t3 += time3 - time2;
-            //System.out.println(t1 + " " + t2 + " " + t3);
+            System.out.println(t1 + " " + t2 + " " + t3);
         }
 
         ArrayList<Experiment> exp = new ArrayList<Experiment>(3);
@@ -202,6 +202,12 @@ public class CollectionsSort {
 
     public static void main(String[] args) {
         System.out.println(compareSort());
+        Integer[] c1 = new Integer[5];
+        randomFill(c1, 50, -50);
+        ArrayList<Integer> l = new ArrayList<Integer>(Arrays.asList(c1));
+        System.out.println(l);
+        mySort(l);
+        System.out.println(l);
     }
 
 }

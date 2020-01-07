@@ -22,6 +22,10 @@ class Order {
         return sum;
     }
 
+    public double getNum() {
+        return sum;
+    }
+
     @Override
     public String toString() {
         return "" + sum;
