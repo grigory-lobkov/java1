@@ -172,7 +172,7 @@ public class CollectionsSort {
             long time0 = System.nanoTime();
             for (int i = cCnt; i > 0; i--) {
                 ArrayList<Integer> l = new ArrayList<Integer>(Arrays.asList(c1));
-                collSort(l);
+                mySort(l);
             }
             long time1 = System.nanoTime();
             for (int i = cCnt; i > 0; i--) {
@@ -182,19 +182,19 @@ public class CollectionsSort {
             long time2 = System.nanoTime();
             for (int i = cCnt; i > 0; i--) {
                 ArrayList<Integer> l = new ArrayList<Integer>(Arrays.asList(c1));
-                mySort(l);
+                collSort(l);
             }
             long time3 = System.nanoTime();
             t1 += time1 - time0;
             t2 += time2 - time1;
             t3 += time3 - time2;
-            //System.out.println(t1/1000 + " " + t2/1000 + " " + t3/1000);
+            System.out.println(t1 / 1000 + " " + t2 / 1000 + " " + t3 / 1000);
         }
 
         ArrayList<Experiment> exp = new ArrayList<Experiment>(3);
-        exp.add(new Experiment("collSort", t1));
+        exp.add(new Experiment("mySort", t1));
         exp.add(new Experiment("minSort", t2));
-        exp.add(new Experiment("mySort", t3));
+        exp.add(new Experiment("collSort", t3));
         Collections.sort(exp, new SortExpByTime());
 
         ArrayList<String> result = new ArrayList<String>(3);
