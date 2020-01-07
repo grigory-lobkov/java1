@@ -78,6 +78,7 @@ Class Calculate, который содержит методы:
 */
 
 class Calculate {
+
     public static double calculation1() {
         StackCalc c = new StackCalc();
         c.push(2.2);
@@ -99,9 +100,15 @@ class Calculate {
         c.div(); // (737.22+24)/(55.6-12.1)+
         c.push(19);
         c.push(3.33);
-        c.sub();
+        c.sub(); // (19-3.33)*(
         c.push(87);
         c.push(2);
+        c.push(13.001);
+        c.push(9.2);
+        c.sub();
+        c.mul();
+        c.add(); // 87+2*(13.001-9.2)
+        c.mul();
         c.add();
         return c.pop();
     }
