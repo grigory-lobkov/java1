@@ -66,6 +66,10 @@ public class OrderQueue {
         return queue.poll();
     }
 
+    public Order getNum() {
+        return queue.poll();
+    }
+
     public static void main(String[] args) {
         OrderQueue oq = new OrderQueue();
         oq.add(new Order(45000));

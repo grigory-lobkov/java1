@@ -162,8 +162,8 @@ public class CollectionsSort {
         long t2 = 0;
         long t1 = 0;
         for (int cnt = 1; cnt <= 2; cnt++) {
-            Integer[] c1 = new Integer[50_000];
-            randomFill(c1, 50_000, -50_000);
+            Integer[] c1 = new Integer[5_000];
+            randomFill(c1, 5_000, -5_000);
             int cCnt = 1;
             long time0 = System.nanoTime();
             for (int i = cCnt; i > 0; i--) {
