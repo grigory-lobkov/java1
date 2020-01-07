@@ -14,7 +14,7 @@ import java.util.PriorityQueue;
 class Order {
     static int num1 = 1; // номер по порядку
     private double sum; // сумма заказа
-    int num; // номер по порядку
+    private int num; // номер по порядку
 
     public Order(double sum) {
         this.sum = sum;
