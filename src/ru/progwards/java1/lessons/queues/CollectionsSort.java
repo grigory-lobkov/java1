@@ -188,7 +188,7 @@ public class CollectionsSort {
             t1 += time1 - time0;
             t2 += time2 - time1;
             t3 += time3 - time2;
-            System.out.println(t1 / 1000 + " " + t2 / 1000 + " " + t3 / 1000);
+            //System.out.println(t1 / 1000 + " " + t2 / 1000 + " " + t3 / 1000);
         }
 
         ArrayList<Experiment> exp = new ArrayList<Experiment>(3);
