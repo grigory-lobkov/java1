@@ -51,7 +51,8 @@ public class UsageFrequency {
         int strLen = str.length();
         for (int i = 0; i < strLen; i++) {
             keyChar = str.charAt(i);
-            if (Character.isLetter(keyChar)) {
+            //if (Character.isLetter(keyChar)) { // странно, почему в тесте цифры идут за символы. Используем isLetterOrDigit
+            if (Character.isLetterOrDigit(keyChar)) {
                 letters.put(keyChar, letters.containsKey(keyChar) ? 1 + letters.get(keyChar) : 1);
                 if (wordBeginIdx < 0) wordBeginIdx = i;
             } else {
