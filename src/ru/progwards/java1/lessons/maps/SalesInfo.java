@@ -74,7 +74,7 @@ public class SalesInfo {
                 goods.put(good, goods.containsKey(good) ? goods.get(good) + sum : sum);
                 //В String  - ФИ, в Double - сумма всех покупок покупателя, в Integer - количество покупок
                 if (consumers.containsKey(fio)) {
-                    var simpleEntry = consumers.get(fio);
+                    AbstractMap.SimpleEntry<Double, Integer> simpleEntry = consumers.get(fio);
                     sum += simpleEntry.getKey();
                     cnt += simpleEntry.getValue();
                 }
