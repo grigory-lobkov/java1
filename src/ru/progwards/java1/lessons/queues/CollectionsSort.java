@@ -166,7 +166,7 @@ public class CollectionsSort {
         long t2 = 0;
         long t1 = 0;
         for (int cnt = 0; cnt < 3; cnt++) {
-            Integer[] c1 = new Integer[1000];
+            Integer[] c1 = new Integer[100];
             randomFill(c1, 5_000, -5_000);
             int cCnt = 1;
             long time0 = System.nanoTime();
@@ -206,12 +206,12 @@ public class CollectionsSort {
 
     public static void main(String[] args) {
         System.out.println(compareSort());
-        Integer[] c1 = new Integer[5];
+        /*Integer[] c1 = new Integer[5];
         randomFill(c1, 50, -50);
         ArrayList<Integer> l = new ArrayList<Integer>(Arrays.asList(c1));
         System.out.println(l);
         mySort(l);
-        System.out.println(l);
+        System.out.println(l);*/
     }
 
 }
