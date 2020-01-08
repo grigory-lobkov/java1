@@ -166,7 +166,7 @@ public class CollectionsSort {
         long t2 = 0;
         long t1 = 0;
         for (int cnt = 0; cnt < 3; cnt++) {
-            Integer[] c1 = new Integer[100];
+            Integer[] c1 = new Integer[500];
             randomFill(c1, 5_000, -5_000);
             int cCnt = 1;
             long time0 = System.nanoTime();
@@ -188,7 +188,7 @@ public class CollectionsSort {
             t1 += time1 - time0;
             t2 += time2 - time1;
             t3 += time3 - time2;
-            System.out.println(t1 / 1000 + " " + t2 / 1000 + " " + t3 / 1000);
+            //System.out.println(t1 / 1000 + " " + t2 / 1000 + " " + t3 / 1000);
         }
 
         ArrayList<Experiment> exp = new ArrayList<Experiment>(3);
