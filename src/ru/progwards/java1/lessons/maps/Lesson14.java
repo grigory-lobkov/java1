@@ -1,3 +1,5 @@
+package ru.progwards.java1.lessons.maps;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
