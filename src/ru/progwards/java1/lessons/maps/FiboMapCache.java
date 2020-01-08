@@ -124,6 +124,10 @@ public class FiboMapCache {
     // Рассчитываем Фибоначчи с нуля без кеша
 
     public BigDecimal fiboNoCache(int n) {
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException ex) {
+        }
         BigDecimal f1 = BigDecimal.ZERO;
         BigDecimal f2 = BigDecimal.ONE;
         BigDecimal t;
@@ -164,6 +168,7 @@ public class FiboMapCache {
     public static void main(String[] args) {
         FiboMapCache f = new FiboMapCache(true);
         for (int i = 1; i <= 10; i++) System.out.println(f.fiboNumber(i));
+        test();
     }
 
 }
