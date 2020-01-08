@@ -36,12 +36,12 @@ public class FiboMapCache {
 
     FiboMapCache(boolean cacheOn) {
         this.cacheOn = cacheOn;
-        clearCache();
+        clearCahe();
     }
 
     // Очистка кеша
 
-    public void clearCache() {
+    public void clearCahe() {
         if (cacheOn) {
             fiboCache = new HashMap<Integer, BigDecimal>();
             fiboCache.put(1, BigDecimal.ONE);
