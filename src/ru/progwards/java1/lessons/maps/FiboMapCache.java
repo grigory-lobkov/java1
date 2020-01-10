@@ -157,6 +157,8 @@ public class FiboMapCache {
         //fiboNumber cacheOn=true время выполнения 523 - для 100_000
         //java.lang.OutOfMemoryError: Java heap space - для 1_000_000
 
+
+
         /*start = currentTimeMillis();
         f = new FiboMapCache(false);
         for (int i = 1; i <= 1000; i++) f.fiboCacheLast(i);
@@ -165,10 +167,29 @@ public class FiboMapCache {
         //fiboNumber cacheOn=my время выполнения 15592 - для 1_000_000 */
     }
 
-    public static void main(String[] args) {
+    public static void test2() {
+        long start;
         FiboMapCache f = new FiboMapCache(true);
-        for (int i = 1; i <= 10; i++) System.out.println(f.fiboNumber(i));
-        test();
+
+        start = currentTimeMillis();
+        for (int i = 1; i <= 100000; i++) f.fiboNumber(i);
+        System.out.println("Наполняем кеш, мс: " + (currentTimeMillis() - start));
+
+        start = currentTimeMillis();
+        for (int i = 1; i <= 100000; i++) f.fiboNumber(i);
+        System.out.println("Из кеша, мс: " + (currentTimeMillis() - start));
+
+        f.clearCahe();
+        start = currentTimeMillis();
+        for (int i = 1; i <= 100000; i++) f.fiboNumber(i);
+        System.out.println("После чистки кеша, мс: " + (currentTimeMillis() - start));
+    }
+
+
+    public static void main(String[] args) {
+        //FiboMapCache f = new FiboMapCache(true);
+        //for (int i = 1; i <= 10; i++) System.out.println(f.fiboNumber(i));
+        test2();
     }
 
 }
