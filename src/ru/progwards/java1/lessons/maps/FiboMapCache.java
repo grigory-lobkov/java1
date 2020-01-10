@@ -169,17 +169,18 @@ public class FiboMapCache {
 
     public static void test2() {
         FiboMapCache f = new FiboMapCache(true);
-        int LAST_FIBO_NUMBER = 100_000;
+        final int NUM_FROM = 1;
+        final int NUM_TO = 100_000;
 
-        test21(f, LAST_FIBO_NUMBER, "Наполняем кеш");
-        test21(f, LAST_FIBO_NUMBER, "Из кеша");
+        test21(f, NUM_FROM, NUM_TO, "Наполняем кеш");
+        test21(f, NUM_FROM, NUM_TO, "Из кеша");
         f.clearCahe();
-        test21(f, LAST_FIBO_NUMBER, "После чистки кеша");
+        test21(f, NUM_FROM, NUM_TO, "После чистки кеша");
     }
 
-    private static void test21(FiboMapCache f, int countTo, String caption) {
+    private static void test21(FiboMapCache f, int numFrom, int numTo, String caption) {
         long start = currentTimeMillis();
-        for (int i = 1; i <= countTo; i++) f.fiboNumber(i);
+        for (int i = numFrom; i <= numTo; i++) f.fiboNumber(i);
         System.out.println(caption + ", мс: " + (currentTimeMillis() - start));
     }
 
