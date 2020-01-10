@@ -1,6 +1,10 @@
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Lesson15 {
 
@@ -20,6 +24,7 @@ public class Lesson15 {
         System.out.println(zid1.getRules().getOffset(Instant.now()));
         System.out.println(createInstant());*/
         //System.out.println(parseZDT("01.01.2020 16:27:14.444 +0300 Moscow Standard Time"));
+        System.out.println(parseZDT("01.01.2020 16:27:14.444 +0300 Moscow Standard Time"));
     }
 
     //Создайте метод с сигнатурой Instant createInstant(), который возвращает Instant,
@@ -32,7 +37,9 @@ public class Lesson15 {
 
     //Напишите метод, с сигнатурой ZonedDateTime parseZDT(String str),
     // который возвращает ZonedDateTime, парся строку вида "01.01.2020 16:27:14.444 +0300 Moscow Standard Time"
-    //static ZonedDateTime parseZDT(String str) {
-
-    //}
+    static ZonedDateTime parseZDT(String str) {
+        Locale l = Locale.forLanguageTag("EN");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("DD.MM.yyyy HH:mm:ss.SSS Z zzzz", l);
+        return ZonedDateTime.parse(str, dtf.withZone(ZoneId.of("Europe/Moscow")));
+    }
 }
