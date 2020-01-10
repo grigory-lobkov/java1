@@ -168,23 +168,20 @@ public class FiboMapCache {
     }
 
     public static void test2() {
-        long start;
         FiboMapCache f = new FiboMapCache(true);
+        int LAST_FIBO_NUMBER = 100_000;
 
-        start = currentTimeMillis();
-        for (int i = 1; i <= 100000; i++) f.fiboNumber(i);
-        System.out.println("Наполняем кеш, мс: " + (currentTimeMillis() - start));
-
-        start = currentTimeMillis();
-        for (int i = 1; i <= 100000; i++) f.fiboNumber(i);
-        System.out.println("Из кеша, мс: " + (currentTimeMillis() - start));
-
+        test21(f, LAST_FIBO_NUMBER, "Наполняем кеш");
+        test21(f, LAST_FIBO_NUMBER, "Из кеша");
         f.clearCahe();
-        start = currentTimeMillis();
-        for (int i = 1; i <= 100000; i++) f.fiboNumber(i);
-        System.out.println("После чистки кеша, мс: " + (currentTimeMillis() - start));
+        test21(f, LAST_FIBO_NUMBER, "После чистки кеша");
     }
 
+    private static void test21(FiboMapCache f, int countTo, String caption) {
+        long start = currentTimeMillis();
+        for (int i = 1; i <= countTo; i++) f.fiboNumber(i);
+        System.out.println(caption + ", мс: " + (currentTimeMillis() - start));
+    }
 
     public static void main(String[] args) {
         //FiboMapCache f = new FiboMapCache(true);
