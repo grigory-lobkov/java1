@@ -43,6 +43,7 @@ public class FiboMapCache {
 
     public void clearCahe() {
         if (cacheOn) {
+            if (fiboCache != null) fiboCache.clear();
             fiboCache = new HashMap<Integer, BigDecimal>();
             fiboCache.put(1, BigDecimal.ONE);
             fiboCache.put(2, BigDecimal.ONE);
@@ -170,9 +171,9 @@ public class FiboMapCache {
     public static void test2() {
         FiboMapCache f = new FiboMapCache(true);
         final int NUM_FROM = 1;
-        final int NUM_TO = 308_000;
+        final int NUM_TO = 300_000;
 
-        test21(f, NUM_TO, NUM_TO, "Наполняем кеш");
+        test21(f, NUM_FROM, NUM_TO, "Наполняем кеш");
         test21(f, NUM_FROM, NUM_TO, "Из кеша");
         f.clearCahe();
         test21(f, NUM_FROM, NUM_TO, "После чистки кеша");
@@ -184,7 +185,7 @@ public class FiboMapCache {
         Наполняем кеш, мс: 3918
         Из кеша, мс: 52
         После чистки кеша, мс: 4192
-        Наполняем кеш расчетом 308000, мс: 4172
+        Наполняем кеш расчетом 308000, мс: 4099
         Наполняем кеш перебором с 1 до 308000, мс: 4122
         */
     }
