@@ -170,12 +170,23 @@ public class FiboMapCache {
     public static void test2() {
         FiboMapCache f = new FiboMapCache(true);
         final int NUM_FROM = 1;
-        final int NUM_TO = 100_000;
+        final int NUM_TO = 308_000;
 
-        test21(f, NUM_FROM, NUM_TO, "Наполняем кеш");
+        test21(f, NUM_TO, NUM_TO, "Наполняем кеш");
         test21(f, NUM_FROM, NUM_TO, "Из кеша");
         f.clearCahe();
         test21(f, NUM_FROM, NUM_TO, "После чистки кеша");
+        f.clearCahe();
+        test21(f, NUM_TO, NUM_TO, "Наполняем кеш расчетом " + NUM_TO);
+        f.clearCahe();
+        test21(f, NUM_FROM, NUM_TO, "Наполняем кеш перебором с " + NUM_FROM + " до " + NUM_TO);
+        /*
+        Наполняем кеш, мс: 3918
+        Из кеша, мс: 52
+        После чистки кеша, мс: 4192
+        Наполняем кеш расчетом 308000, мс: 4172
+        Наполняем кеш перебором с 1 до 308000, мс: 4122
+        */
     }
 
     private static void test21(FiboMapCache f, int numFrom, int numTo, String caption) {
