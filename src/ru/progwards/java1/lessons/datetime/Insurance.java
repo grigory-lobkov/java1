@@ -1,7 +1,6 @@
 package ru.progwards.java1.lessons.datetime;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,15 +10,24 @@ import java.time.format.DateTimeFormatter;
 Каждая страховка имеет дату-время начала, и продолжительность.
 */
 
-enum FormatStyle {SHORT, LONG, FULL}; // стиль формата даты-времени
-
 public class Insurance {
+
+    enum FormatStyle {SHORT, LONG, FULL}
+
+    ; // стиль формата даты-времени // перенесено сюда для тестера
 
     ZonedDateTime start; // дата-время начала действия страховки
     Duration valid; // продолжительность действия
 
     // установить дату-время начала действия страховки
     public void setStart(ZonedDateTime start) {
+        this.start = start;
+    }
+
+    Insurance() {
+    } // ля тестера, страховка
+
+    Insurance(ZonedDateTime start) { // для тестера
         this.start = start;
     }
 
