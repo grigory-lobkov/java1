@@ -74,7 +74,7 @@ class StatisticInfo implements Comparable {
 
     @Override
     public String toString() {
-        return sectionName + " total:" + fullTime + " self:" + selfTime;
+        return "\n" + sectionName + " total:" + fullTime + " self:" + selfTime + " count:" + count;
     }
 
     // для сортировки в TreeMap
