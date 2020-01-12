@@ -12,9 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Insurance {
 
-    enum FormatStyle {SHORT, LONG, FULL}
-
-    ; // стиль формата даты-времени // перенесено сюда для тестера
+    enum FormatStyle {SHORT, LONG, FULL} // стиль формата даты-времени // перенесено сюда для тестера
 
     ZonedDateTime start; // дата-время начала действия страховки
     Duration valid; // продолжительность действия
