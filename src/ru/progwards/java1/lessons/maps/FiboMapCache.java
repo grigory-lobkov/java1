@@ -176,7 +176,7 @@ public class FiboMapCache {
     public static void test2() {
         FiboMapCache f = new FiboMapCache(true);
         final int NUM_FROM = 1;
-        final int NUM_TO = 300_000;
+        final int NUM_TO = 1_000;
 
         test21(f, NUM_FROM, NUM_TO, "Наполняем кеш");
         test21(f, NUM_FROM, NUM_TO, "Из кеша");
