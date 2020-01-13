@@ -77,6 +77,12 @@ public class SessionManager {
         sessions = new ArrayList<UserSession>();
         hashSessions = new Hashtable<Integer, UserSession>();
         //userSessions = new Hashtable<String, UserSession>();
+        this.sessionValid = 60 * 60 * 24 * 30; //month
+    }
+
+    SessionManager(int sessionValid) {
+        this();
+        this.sessionValid = sessionValid;
     }
 
     // добавляет новую сессию пользователя
