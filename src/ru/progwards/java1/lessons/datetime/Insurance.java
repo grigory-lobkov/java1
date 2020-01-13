@@ -76,9 +76,9 @@ public class Insurance {
 
     // проверить валидна ли страховка на указанную дату-время
     public boolean checkValid(ZonedDateTime dateTime) {
-        if (valid == null) return false;
+        if (valid == null) return true;
         ZonedDateTime end = start.plusHours(valid.toHours());
-        return !(dateTime.isBefore(start) || dateTime.isAfter(end));
+        return dateTime.isAfter(start) && dateTime.isBefore(end);
     }
 
     // вернуть строку формата "Insurance "+start+" "+duration

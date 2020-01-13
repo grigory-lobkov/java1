@@ -79,7 +79,7 @@ public class FiboMapCache {
             f2 = f2.add(f1);
             f1 = t;
             fiboCache.put(i, f2);
-            if (i % 3 == 0) // принудительная задуржка, для прохождения робота
+            if (i % 3 == 0) // принудительная задержка, для прохождения робота
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException ex) {
