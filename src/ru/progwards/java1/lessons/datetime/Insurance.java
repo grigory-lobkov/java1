@@ -43,7 +43,6 @@ public class Insurance {
                 break;
             case LONG:
                 formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-                LocalDate date = LocalDate.parse(strStart, formatter);
                 break;
             default:
                 formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
@@ -63,8 +62,22 @@ public class Insurance {
         valid = Duration.between(start, stop);
     }
 
-    public void setDuration(String strStart, FormatStyle style) {
-        valid = Duration.between(start, styledStringToZDT(strStart, style));
+    public void setDuration(String durationStr, FormatStyle style) {
+        //valid = Duration.between(start, styledStringToZDT(strStart, style));
+        switch (style) {
+            case SHORT: //целое число миллисекунд (тип long)
+                valid = Duration.ofMillis(Integer.parseInt(durationStr));
+                break;
+            case LONG: //ISO_LOCAL_DATE_TIME - как период, например “0000-06-03T10:00:00” означает, что продолжительность действия страховки 0 лет, 6 месяцев, 3 дня 10 часов.
+                //LocalDate date = LocalDate.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                //valid = Duration.ofMillis(date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                LocalDate date0 = LocalDate.parse("0000-00-00T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                LocalDate date1 = LocalDate.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                valid = Duration.between(date0, date1);
+                break;
+            default: //FULL - стандартный формат Duration, который получается через toString()
+                valid = Duration.parse(durationStr);
+        }
     }
 
     // установить продолжительность действия страховки, задав целыми числами количество месяцев, дней и часов
