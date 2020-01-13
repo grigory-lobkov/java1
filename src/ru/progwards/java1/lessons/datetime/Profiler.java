@@ -72,6 +72,21 @@ class StatisticInfo implements Comparable {
         }
     }
 
+    // удалить внутреннюю секцию
+    void removeInsider(StatisticInfo info) {
+        if (isRun) {
+            long timeNow = getTimeNow();
+            ListIterator i = runInside.listIterator();
+            while (i.hasNext()) {
+                Insider insider = (Insider) i.next();
+                if (insider.info == info) {
+                    selfTime -= insider.getInsideTime(timeNow);
+                    i.remove();
+                }
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "\n" + sectionName + " total:" + fullTime + " self:" + selfTime + " count:" + count;
@@ -122,6 +137,9 @@ public class Profiler {
     public static void exitSection(String name) {
         StatisticInfo section = sections.get(name);
         section.exit();
+        if (!section.isRun) {
+            for (StatisticInfo i : sections.values()) i.removeInsider(section);
+        }
     }
 
     // обнулить статистику
@@ -146,7 +164,7 @@ public class Profiler {
     }
 
     public static void main(String[] args) {
-        sleep(100);
+        /*sleep(100);
         enterSection("s1");
         sleep(10);
         enterSection("s2");
@@ -168,6 +186,20 @@ public class Profiler {
         exitSection("s1");
         exitSection("s2");
         exitSection("s3");
+        System.out.println(getSectionsInfo());*/
+        enterSection("s1");
+        sleep(100);
+        enterSection("s2");
+        sleep(200);
+        exitSection("s2");
+        enterSection("s2");
+        sleep(200);
+        exitSection("s2");
+        enterSection("s2");
+        sleep(200);
+        exitSection("s2");
+        sleep(100);
+        exitSection("s1");
         System.out.println(getSectionsInfo());
     }
 }
