@@ -1,9 +1,6 @@
 package ru.progwards.java1.lessons.datetime;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 /*
@@ -71,8 +68,8 @@ public class Insurance {
             case LONG: //ISO_LOCAL_DATE_TIME - как период, например “0000-06-03T10:00:00” означает, что продолжительность действия страховки 0 лет, 6 месяцев, 3 дня 10 часов.
                 //LocalDate date = LocalDate.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 //valid = Duration.ofMillis(date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                LocalDate date0 = LocalDate.parse("0000-01-01T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                LocalDate date1 = LocalDate.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME).plusMonths(1).plusDays(1);
+                LocalDateTime date0 = LocalDateTime.parse("0000-01-01T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                LocalDateTime date1 = LocalDateTime.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME).plusMonths(1).plusDays(1);
                 valid = Duration.between(date0, date1);
                 break;
             default: //FULL - стандартный формат Duration, который получается через toString()
@@ -100,4 +97,12 @@ public class Insurance {
         return "Insurance issued on " + start + " is " + (checkValid(ZonedDateTime.now()) ? "" : "not ") + "valid";
     }
 
+    public static void main(String[] args) {
+        LocalDateTime date0 = LocalDateTime.parse("0000-01-01T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime date1 = LocalDateTime.parse("0000-06-03T10:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME).plusMonths(1).plusDays(1);
+        Duration valid = Duration.between(date0, date1);
+        System.out.println(date0);
+        System.out.println(date1);
+        System.out.println(valid);
+    }
 }
