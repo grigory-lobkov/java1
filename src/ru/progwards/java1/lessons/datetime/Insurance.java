@@ -23,10 +23,14 @@ public class Insurance {
     }
 
     Insurance() {
-    } // ля тестера, страховка
+    }
 
-    Insurance(ZonedDateTime start) { // для тестера
+    Insurance(ZonedDateTime start) {
         this.start = start;
+    }
+
+    Insurance(String strStart, FormatStyle style) {
+        setStart(strStart, style);
     }
 
     //установить дату-время начала действия страховки,

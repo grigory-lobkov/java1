@@ -31,12 +31,12 @@ class UserSession {
         this.sessionManager = sessionManager;
     }
 
-    public void setSessionHanle(int sessionHanle) {
+    public void setSessionHandle(int sessionHanle) {
         sessionManager.reHash(this, this.sessionHanle, sessionHanle);
         this.sessionHanle = sessionHanle;
     }
 
-    public int getSessionHanle() {
+    public int getSessionHandle() {
         return sessionHanle;
     }
 
@@ -71,17 +71,12 @@ public class SessionManager {
     Hashtable<Integer, UserSession> hashSessions; // поиск сессии по sessionHanle
     //Hashtable<String, UserSession> userSessions; // поск сессии по userName: не понятно, может ли быть несколько сессий у одного пользователя
 
-    int sessionValid; // период валидности сессии в секундах - плохо, что нет геттера/сеттера и паблик метод - его надо в конструктор
+    int sessionValid; // период валидности сессии в секундах
 
-    SessionManager() {
+    SessionManager(int sessionValid) {
         sessions = new ArrayList<UserSession>();
         hashSessions = new Hashtable<Integer, UserSession>();
         //userSessions = new Hashtable<String, UserSession>();
-        this.sessionValid = 60 * 60 * 24 * 30; //month
-    }
-
-    SessionManager(int sessionValid) {
-        this();
         this.sessionValid = sessionValid;
     }
 
@@ -90,11 +85,11 @@ public class SessionManager {
         // проверка на уникальность по имени пользователя - нужна ли?
         //if(find(userSession.getUserName()) != null) return; // лучше бы метод add возвращал true/false
         // проверка на уникальность по хэшу сессии
-        if (get(userSession.getSessionHanle()) != null) return; // лучше бы метод add возвращал true/false
+        if (get(userSession.getSessionHandle()) != null) return; // лучше бы метод add возвращал true/false
         // основное действие
         userSession.setSessionManager(this);
         sessions.add(userSession);
-        hashSessions.put(userSession.getSessionHanle(), userSession);
+        hashSessions.put(userSession.getSessionHandle(), userSession);
         //userSessions.put(userSession.getUserName(), userSession);
     }
 
@@ -133,7 +128,7 @@ public class SessionManager {
         while (i.hasNext()) {
             UserSession s = (UserSession) i.next();
             if (!s.isValid(sessionValid, now)) {
-                hashSessions.remove(s.getSessionHanle());
+                hashSessions.remove(s.getSessionHandle());
                 i.remove();
             }
         }
@@ -158,18 +153,18 @@ public class SessionManager {
     }
 
     public static void main(String[] args) {
-        SessionManager mgr = new SessionManager();
+        SessionManager mgr = new SessionManager(3);
         mgr.sessionValid = 3;
         String n = "u1";
         UserSession u1 = new UserSession(n);
         if (mgr.find(n) == null) mgr.add(u1);
-        System.out.println(mgr.get(u1.getSessionHanle()));
-        System.out.println(mgr.get(u1.getSessionHanle()));
-        System.out.println(mgr.get(u1.getSessionHanle()));
+        System.out.println(mgr.get(u1.getSessionHandle()));
+        System.out.println(mgr.get(u1.getSessionHandle()));
+        System.out.println(mgr.get(u1.getSessionHandle()));
         sleep(1500);
-        System.out.println(mgr.get(u1.getSessionHanle()));
+        System.out.println(mgr.get(u1.getSessionHandle()));
         sleep(1500);
-        System.out.println("null=" + mgr.get(u1.getSessionHanle()));
+        System.out.println("null=" + mgr.get(u1.getSessionHandle()));
         UserSession u2 = new UserSession("u2");
         mgr.add(u2);
         System.out.println(mgr);
@@ -182,7 +177,7 @@ public class SessionManager {
         mgr.deleteExpired();
         System.out.println("deleteExpired()");
         System.out.println(mgr);
-        mgr.delete(u3.getSessionHanle());
+        mgr.delete(u3.getSessionHandle());
         System.out.println(mgr);
     }
 }
