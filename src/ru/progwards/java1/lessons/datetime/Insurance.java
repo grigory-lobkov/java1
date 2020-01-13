@@ -1,6 +1,7 @@
 package ru.progwards.java1.lessons.datetime;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,15 +39,18 @@ public class Insurance {
         DateTimeFormatter formatter;
         switch (style) {
             case SHORT:
-                formatter = DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneId.systemDefault());
+                formatter = DateTimeFormatter.ISO_LOCAL_DATE;
                 break;
             case LONG:
-                formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault());
+                formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                LocalDate date = LocalDate.parse(strStart, formatter);
                 break;
             default:
                 formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
+                return ZonedDateTime.parse(strStart, formatter);
         }
-        return ZonedDateTime.parse(strStart, formatter);
+        LocalDate date = LocalDate.parse(strStart, formatter);
+        return date.atStartOfDay(ZoneId.systemDefault());
     }
 
     // установить продолжительность действия страховки
@@ -72,6 +76,7 @@ public class Insurance {
 
     // проверить валидна ли страховка на указанную дату-время
     public boolean checkValid(ZonedDateTime dateTime) {
+        if (valid == null) return false;
         ZonedDateTime end = start.plusHours(valid.toHours());
         return dateTime.isAfter(start) && dateTime.isBefore(end);
     }
