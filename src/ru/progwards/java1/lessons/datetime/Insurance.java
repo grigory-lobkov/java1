@@ -30,14 +30,11 @@ public class Insurance {
     }
 
     Insurance(String strStart, FormatStyle style) {
-        setStart(strStart, style);
+        start = styledStringToZDT(strStart, style);
     }
 
-    //установить дату-время начала действия страховки,
-    //SHORT соответствует ISO_LOCAL_DATE  (часовой пояс по умолчанию)
-    //LONG  - ISO_LOCAL_DATE_TIME  (часовой пояс по умолчанию)
-    //FULL - ISO_ZONED_DATE_TIME
-    public void setStart(String strStart, FormatStyle style) {
+    // найти дату-время по строке с заданным форматом
+    private ZonedDateTime styledStringToZDT(String strStart, FormatStyle style) {
         DateTimeFormatter formatter;
         switch (style) {
             case SHORT:
@@ -49,7 +46,7 @@ public class Insurance {
             default:
                 formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
         }
-        start = ZonedDateTime.parse(strStart, formatter);
+        return ZonedDateTime.parse(strStart, formatter);
     }
 
     // установить продолжительность действия страховки
@@ -60,6 +57,10 @@ public class Insurance {
     // установить продолжительность действия страховки, задав дату-время окончания
     public void setDuration(ZonedDateTime stop) {
         valid = Duration.between(start, stop);
+    }
+
+    public void setDuration(String strStart, FormatStyle style) {
+        valid = Duration.between(start, styledStringToZDT(strStart, style));
     }
 
     // установить продолжительность действия страховки, задав целыми числами количество месяцев, дней и часов

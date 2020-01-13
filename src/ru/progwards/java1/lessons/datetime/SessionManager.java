@@ -24,7 +24,7 @@ class UserSession {
         //this.sessionHanle = (int)(Math.random()*Integer.MAX_VALUE);// по заданию
         this.sessionHanle = handleNextNum++; // считаю так лучше для хэш таблицы + полная уникальность + легче
         this.userName = userName;
-        this.lastAccess = LocalDateTime.now();
+        refreshLastAccess();
     }
 
     public void setSessionManager(SessionManager sessionManager) {
@@ -46,6 +46,10 @@ class UserSession {
 
     public String getUserName() {
         return userName;
+    }
+
+    public void refreshLastAccess() {
+        this.lastAccess = LocalDateTime.now();
     }
 
     public void setLastAccess(LocalDateTime lastAccess) {
@@ -109,7 +113,12 @@ public class SessionManager {
     // проверяет наличие существующей сессии по хендлу. Если срок валидности истек, или такой нет, возвращает null
     public UserSession get(int sessionHandle) {
         UserSession s = hashSessions.get(sessionHandle);
-        return s == null ? s : s.isValid(sessionValid, LocalDateTime.now()) ? s : null;
+        if (s == null && s.isValid(sessionValid, LocalDateTime.now())) {
+            s.refreshLastAccess();
+            return s;
+        } else {
+            return null;
+        }
     }
 
     // удаляет указанную сессию пользователя
