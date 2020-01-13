@@ -71,8 +71,8 @@ public class Insurance {
             case LONG: //ISO_LOCAL_DATE_TIME - как период, например “0000-06-03T10:00:00” означает, что продолжительность действия страховки 0 лет, 6 месяцев, 3 дня 10 часов.
                 //LocalDate date = LocalDate.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 //valid = Duration.ofMillis(date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                LocalDate date0 = LocalDate.parse("0000-00-00T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                LocalDate date1 = LocalDate.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                LocalDate date0 = LocalDate.parse("0000-01-01T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                LocalDate date1 = LocalDate.parse(durationStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME).plusMonths(1).plusDays(1);
                 valid = Duration.between(date0, date1);
                 break;
             default: //FULL - стандартный формат Duration, который получается через toString()
