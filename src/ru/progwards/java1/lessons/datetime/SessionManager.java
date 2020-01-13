@@ -113,7 +113,7 @@ public class SessionManager {
     // проверяет наличие существующей сессии по хендлу. Если срок валидности истек, или такой нет, возвращает null
     public UserSession get(int sessionHandle) {
         UserSession s = hashSessions.get(sessionHandle);
-        if (s == null && s.isValid(sessionValid, LocalDateTime.now())) {
+        if (s != null && s.isValid(sessionValid, LocalDateTime.now())) {
             s.refreshLastAccess();
             return s;
         } else {
