@@ -114,6 +114,11 @@ public class FiboMapCache {
             t = f2;
             f2 = f2.add(f1);
             f1 = t;
+            if (i % 3 == 0)
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                }
         }
 
         lastFibo_n = n;
