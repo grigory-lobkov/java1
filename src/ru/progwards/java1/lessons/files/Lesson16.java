@@ -1,3 +1,5 @@
+package ru.progwards.java1.lessons.files;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
