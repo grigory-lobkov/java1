@@ -1,8 +1,6 @@
 package ru.progwards.java1.lessons.files;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 interface IGetPathValue<T> {
     T get(Path p);
@@ -65,6 +62,33 @@ public class FindDuplicates {
         });
 
         return paths;
+    }
+
+    public static boolean isEqualPaths(Path path1, Path path2) {
+        try (
+                InputStream f1 = Files.newInputStream(path1);
+                InputStream f2 = Files.newInputStream(path2);
+        ) {
+            long fSize = Files.size(path1);
+            int bufSize = fSize / 10;
+            final int minBufSize = 10 * 1024;
+            final int maxBufSize = 1 * 1024 * 1024;
+            if (bufSize > maxBufSize) bufSize = maxBufSize;
+            else if (bufSize < minBufSize) bufSize = minBufSize;
+            try (
+                    BufferedInputStream s1 = new BufferedInputStream(f1);
+                    BufferedInputStream s2 = new BufferedInputStream(f2);
+            ) {
+                int i1, i2;
+                while ((i1 = s1.read()) != -1) {
+                    i2 = s2.read();
+                    if (i1 != i2) return false;
+                }
+                return true;
+            }
+        } catch (Throwable e) {
+            return false;
+        }
     }
 
     // в заданных списках файлов оставит только с одинаковым размером
