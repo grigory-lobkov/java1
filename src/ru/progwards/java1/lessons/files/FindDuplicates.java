@@ -3,14 +3,11 @@ package ru.progwards.java1.lessons.files;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.stream.Collectors;
 
-interface IGetPathValue<T> {
-    T get(Path p);
+interface IGetPathValue<TypeResult, TypeParam> {
+    TypeResult get(TypeParam p);
 }
 
 public class FindDuplicates {
@@ -53,13 +50,7 @@ public class FindDuplicates {
         //System.out.println(paths);
 
         // с одинаковым содержимым
-        paths = getEquals(paths, p -> {
-            try {
-                return Files.size(p);
-            } catch (IOException e) {
-                return null;
-            }
-        });
+        paths = getEquals(paths, (o1, o2) -> isEqualPaths(o1, o2) ? 0 : 1);
 
         return paths;
     }
@@ -70,40 +61,77 @@ public class FindDuplicates {
                 InputStream f2 = Files.newInputStream(path2);
         ) {
             long fSize = Files.size(path1);
-            int bufSize = fSize / 10;
-            final int minBufSize = 10 * 1024;
+            int bufSize = (int) (fSize / 16);
+            final int minBufSize = 128 * 1024;
             final int maxBufSize = 1 * 1024 * 1024;
-            if (bufSize > maxBufSize) bufSize = maxBufSize;
-            else if (bufSize < minBufSize) bufSize = minBufSize;
+            if (bufSize > maxBufSize || fSize > Integer.MAX_VALUE) bufSize = maxBufSize;
+            else if (bufSize < minBufSize)
+                if (fSize < minBufSize) bufSize = (int) fSize;
+                else bufSize = (int) fSize / 4;
             try (
-                    BufferedInputStream s1 = new BufferedInputStream(f1);
-                    BufferedInputStream s2 = new BufferedInputStream(f2);
+                    BufferedInputStream s1 = new BufferedInputStream(f1, bufSize);
+                    BufferedInputStream s2 = new BufferedInputStream(f2, bufSize);
             ) {
-                int i1, i2;
-                while ((i1 = s1.read()) != -1) {
-                    i2 = s2.read();
-                    if (i1 != i2) return false;
+                int b1;
+                while ((b1 = s1.read()) != -1) {
+                    if (b1 != s2.read()) return false;
                 }
-                return true;
+                return s2.read() == -1;
             }
         } catch (Throwable e) {
             return false;
         }
     }
 
-    // в заданных списках файлов оставит только с одинаковым размером
-    public static <T> List<List<Path>> getEquals(List<List<Path>> paths, IGetPathValue<T> comparatorFunc) {
-        ListIterator<List<Path>> pathsIterator = paths.listIterator();
-        List<List<Path>> result = new ArrayList<List<Path>>();
+    // в заданных списках оставит только с одинаковым результатом comparatorFunc
+    public static <T> List<List<T>> getEquals(List<List<T>> paths, Comparator<T> comparatorFunc) {
+        List<List<T>> result = new ArrayList<List<T>>();
+        for (List<T> pList : paths) {
+            int[] foundIdx = new int[pList.size()]; // массив найенных, храним индекс в массиве результатов
+            boolean[] found = new boolean[pList.size()]; // массив найенных, храним индекс в массиве результатов
+            int i1 = -1;
+            for (T p1 : pList) {
+                i1++;
+                if (!found[i1]) {
+                    found[i1] = true;
+                    int i2 = -1;
+                    for (T p2 : pList) {
+                        i2++;
+                        if (!found[i2]) {
+                            int cmp = comparatorFunc.compare(p1, p2);
+                            if (cmp == 0) {
+                                int idx = foundIdx[i1];
+                                if (idx > 0) {
+                                    result.get(idx).add(p2);
+                                } else {
+                                    foundIdx[i1] = result.size();
+                                    ArrayList<T> list = new ArrayList<T>();
+                                    list.add(p1);
+                                    list.add(p2);
+                                    result.add(list);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    // в заданных списках Tobj оставит только с одинаковым значением comparatorFunc
+    public static <CompareObj, ListOfObj> List<List<ListOfObj>> getEquals(List<List<ListOfObj>> paths, IGetPathValue<CompareObj, ListOfObj> comparatorFunc) {
+        ListIterator<List<ListOfObj>> pathsIterator = paths.listIterator();
+        List<List<ListOfObj>> result = new ArrayList<List<ListOfObj>>();
         while (pathsIterator.hasNext()) {
-            List<Path> p1 = pathsIterator.next();
-            Hashtable<T, List<Path>> ht = new Hashtable<T, List<Path>>();
-            for (Path p : p1) {
-                T cmp = comparatorFunc.get(p);
+            List<ListOfObj> p1 = pathsIterator.next();
+            Hashtable<CompareObj, List<ListOfObj>> ht = new Hashtable<CompareObj, List<ListOfObj>>();
+            for (ListOfObj p : p1) {
+                CompareObj cmp = comparatorFunc.get(p);
                 if(cmp!=null) {
-                    List<Path> found = ht.get(cmp);
+                    List<ListOfObj> found = ht.get(cmp);
                     if (found == null) {
-                        found = new ArrayList<Path>();
+                        found = new ArrayList<ListOfObj>();
                         found.add(p);
                         ht.put(cmp, found);
                     } else {
@@ -219,6 +247,7 @@ public class FindDuplicates {
         //System.out.println(readAllFilesIo("src"));
         //System.out.println(readAllFilesNio("src"));
         //System.out.println(readAllFilesLambda("src"));
-        System.out.println(findDuplicates("."));
+        System.out.println(findDuplicates(".").toString().replace("], ", "]," + (char) 10));
+        //System.out.println(findDuplicates("/").toString().replace("], ", "],"+(char)10));
     }
 }
