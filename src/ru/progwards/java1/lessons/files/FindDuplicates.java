@@ -1,6 +1,9 @@
 package ru.progwards.java1.lessons.files;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -17,18 +20,21 @@ public class FindDuplicates {
 // , результат - список, содержащий списки строк с именами и полными путями совпадающих файлов.
 
     // В заданном каталоге и его подкаталогах найти файлы, точно совпадающие
-    public static List<List<Path>> findDuplicates(String startPath) {
+    public static List<List<String>> findDuplicates(String startPath) {
+        System.out.println("Reading directory...");
         List<Path> path = readAllPathsNio(startPath);
         if (path == null) return null;
         List<List<Path>> paths = new ArrayList<List<Path>>();
         paths.add(path);
-        //System.out.println(paths);
+        System.out.println("found: " + countAll((Collection) paths) + "\n");
 
         // с одинаковыми именами
+        System.out.println("Search equal names...");
         paths = getEquals(paths, p -> p.getFileName().toString());
-        //System.out.println(paths);
+        System.out.println("found: " + countAll((Collection) paths) + "\n");
 
         // с одинаковой датой-временем последнего изменения
+        System.out.println("Search equal modify time...");
         paths = getEquals(paths, p -> {
             try {
                 //return Files.getLastModifiedTime(p);
@@ -37,9 +43,10 @@ public class FindDuplicates {
                 return null;
             }
         });
-        //System.out.println(paths);
+        System.out.println("found: " + countAll((Collection) paths) + "\n");
 
         // с одинаковым размером
+        System.out.println("Search equal size...");
         paths = getEquals(paths, p -> {
             try {
                 return Files.size(p);
@@ -47,12 +54,37 @@ public class FindDuplicates {
                 return null;
             }
         });
-        //System.out.println(paths);
+        System.out.println("found: " + countAll((Collection) paths) + "\n");
 
         // с одинаковым содержимым
+        System.out.println("Search for the same content...");
         paths = getEquals(paths, (o1, o2) -> isEqualPaths(o1, o2) ? 0 : 1);
+        System.out.println("found: " + countAll((Collection) paths) + "\n");
 
-        return paths;
+        // преобразуем к List<List<String>>
+        List<List<String>> result = new ArrayList<List<String>>(paths.size());
+        for (List<Path> pl : paths) {
+            List<String> l = new ArrayList<String>(pl.size());
+            for (Path p : pl) l.add(p.toString());
+            result.add(l);
+        }
+        return result;
+    }
+
+    // посчитать общее количество элементов вместе со всеми подколлекциями
+    public static int countAll(Collection<Object> inCollection) {
+        int result = inCollection.size();
+        if (result > 0) {
+            Iterator i = inCollection.iterator();
+            Object o = i.next();
+            if (o instanceof Collection) {
+                result += countAll((Collection) o);
+                while (i.hasNext()) {
+                    result += countAll((Collection) i.next());
+                }
+            }
+        }
+        return result;
     }
 
     public static boolean isEqualPaths(Path path1, Path path2) {
@@ -248,6 +280,6 @@ public class FindDuplicates {
         //System.out.println(readAllFilesNio("src"));
         //System.out.println(readAllFilesLambda("src"));
         System.out.println(findDuplicates(".").toString().replace("], ", "]," + (char) 10));
-        //System.out.println(findDuplicates("/").toString().replace("], ", "],"+(char)10));
+        //System.out.println(findDuplicates("c:/windows").toString().replace("], ", "],"+(char)10));
     }
 }
