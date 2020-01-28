@@ -1,15 +1,12 @@
 package ru.progwards.java1.lessons.files;
 
 import java.io.BufferedReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FilesSelect {
 /*
