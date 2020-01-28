@@ -178,57 +178,10 @@ public class FindDuplicates {
         return result;
     }
 
-    // в заданных списках файлов оставит только с одинаковым размером
-    public static List<List<Path>> getEqualSizes(List<List<Path>> paths) throws IOException {
-        ListIterator<List<Path>> pathsIterator = paths.listIterator();
-        List<List<Path>> result = new ArrayList<List<Path>>();
-        while (pathsIterator.hasNext()) {
-            List<Path> p1 = pathsIterator.next();
-            Hashtable<Long, List<Path>> ht = new Hashtable<Long, List<Path>>();
-            for (Path p : p1) {
-                Long fsize = Files.size(p);
-                List<Path> found = ht.get(fsize);
-                if (found == null) {
-                    found = new ArrayList<Path>();
-                    found.add(p);
-                    ht.put(fsize, found);
-                } else {
-                    found.add(p);
-                }
-            }
-            ht.forEach((k, v) -> {
-                if (v.size() > 1) result.add(v);
-            });
-        }
-        return result;
-    }
-
-    // заданный список файлов сгруппирует по одинаковым именам
-    public static List<List<Path>> getEqualNames(List<Path> paths) {
-        Hashtable<String, List<Path>> names = new Hashtable<String, List<Path>>();
-        for (Path p : paths) {
-            String fname = p.getFileName().toString();
-            List<Path> found = names.get(fname);
-            if (found == null) {
-                found = new ArrayList<Path>();
-                found.add(p);
-                names.put(fname, found);
-            } else {
-                found.add(p);
-            }
-        }
-        List<List<Path>> result = new ArrayList<List<Path>>();
-        names.forEach((k, v) -> {
-            if (v.size() > 1) result.add(v);
-        });
-        return result;
-    }
-
     // Считываем все файлы в данном каталоге в поток
     public static List<Path> readAllPathsLambda(String startPath) throws IOException {
         return Files.walk(Paths.get(startPath))
-                .filter(Files::isRegularFile)
-                //.map(Path::toString)
+                .filter(Files::isRegularFile) //.map(Path::toString)
                 .collect(Collectors.toList());
     }
 
