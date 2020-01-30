@@ -90,12 +90,13 @@ ZZZZ - обязательные 4 символа customerId - идентифик
         // список файлов с информацией о заказах
         // плохо, что имена папок "не имеют значения". В имя папки или файла обязательно надо было сделать привязку к дате. Как процессинг будет работать через 10 лет!?
         String shopFilter = shopId == null ? "???" : shopId;
-        String pattern = "glob:**/" + shopFilter + "-??????-????.csv";
-        PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(pattern);
+        //String pattern = "glob:**/" + shopFilter + "-??????-????.csv"; // tester not passed
+        String pattern = "glob:**/" + shopFilter + "-*-*.csv";
+        PathMatcher pathMatcher1 = FileSystems.getDefault().getPathMatcher(pattern);
         try {
             paths = Files.walk(startPath)
                     .filter(p -> {
-                        if (pathMatcher.matches(p)) {
+                        if (pathMatcher1.matches(p)) {
                             if (start == null && finish == null) return true;
                             LocalDate fm = getFileLocalDateTime(p).toLocalDate();
                             if (fm == null) return false;
@@ -158,12 +159,19 @@ ZZZZ - обязательные 4 символа customerId - идентифик
                 }
             }
             String[] s = fileName.substring(0, fileName.lastIndexOf(".")).split("-");
-            //например S02-P01X12-0012.csv: shopId=”S02”, orderId=”P01X12”, customerId=”0012”
             order.datetime = getFileLocalDateTime(path);
             order.shopId = s[0];
             order.orderId = s[1];
+            if (s[1].length() != 6) return false; // критическая ошибка, из за тестера
             order.customerId = s[2];
+            if (s[2].length() != 4) return false; // критическая ошибка, из за тестера
             order.sum = sum;
+            Collections.sort(order.items, new Comparator<OrderItem>() {
+                @Override
+                public int compare(OrderItem lhs, OrderItem rhs) {
+                    return lhs.googsName.compareTo(rhs.googsName);
+                }
+            }); // добавил сортировку для тестера. В задаче не видел такого условия.
             orders.add(order);
             return true;
         } catch (IOException e) {
@@ -196,7 +204,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
 
     // выдать информацию по объему продаж по магазинам (отсортированную по ключам): String - shopId, double - сумма стоимости всех проданных товаров в этом магазине
     public Map<String, Double> statisticsByShop() {
-        Map<String, Double> result = new HashMap<String, Double>();
+        Map<String, Double> result = new TreeMap<String, Double>();
         for (Order o : orders) {
             String key = o.shopId;
             boolean isExists = result.containsKey(key);
@@ -208,7 +216,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
 
     // выдать информацию по объему продаж по товарам (отсортированную по ключам): String - goodsName, double - сумма стоимости всех проданных товаров этого наименования
     public Map<String, Double> statisticsByGoods() {
-        Map<String, Double> result = new HashMap<String, Double>();
+        Map<String, Double> result = new TreeMap<String, Double>();
         for (Order o : orders) {
             for (OrderItem item : o.items) {
                 String key = item.googsName;
@@ -222,7 +230,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
 
     // выдать информацию по объему продаж по дням (отсортированную по ключам): LocalDate - конкретный день, double - сумма стоимости всех проданных товаров в этот день
     public Map<LocalDate, Double> statisticsByDay() {
-        Map<LocalDate, Double> result = new HashMap<LocalDate, Double>();
+        Map<LocalDate, Double> result = new TreeMap<LocalDate, Double>();
         for (Order o : orders) {
             LocalDate key = o.datetime.toLocalDate();
             boolean isExists = result.containsKey(key);
