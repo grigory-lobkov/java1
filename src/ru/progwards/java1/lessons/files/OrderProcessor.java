@@ -1,5 +1,7 @@
 package ru.progwards.java1.lessons.files;
 
+import com.google.common.base.Strings;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -89,7 +91,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
 
         // список файлов с информацией о заказах
         // плохо, что имена папок "не имеют значения". В имя папки или файла обязательно надо было сделать привязку к дате. Как процессинг будет работать через 10 лет!?
-        String shopFilter = shopId == null ? "???" : shopId;
+        String shopFilter = Strings.isNullOrEmpty(shopId) ? "???" : shopId;
         //String pattern = "glob:**/" + shopFilter + "-??????-????.csv"; // tester not passed
         String pattern = "glob:**/" + shopFilter + "-*-*.csv";
         PathMatcher pathMatcher1 = FileSystems.getDefault().getPathMatcher(pattern);
@@ -116,7 +118,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
             if (!loadOrderFromFile(path)) {
                 failedFiles++;
                 //System.out.println("Processing failed: "+path);
-            }
+            } //else { System.out.println("Ok: "+path); }
         }
         //System.out.println(orders);
         //sortOrders(); // отсортируем orders // отсортировали файлы ранее, потому это не надо
@@ -144,8 +146,8 @@ ZZZZ - обязательные 4 символа customerId - идентифик
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
+                    if (Strings.isNullOrEmpty(line)) continue;
                     String[] s = line.split(DELIMITER);
-                    if (s.length == 0) continue;
                     if (s.length != 3) return false; // критическая ошибка
                     OrderItem item = new OrderItem();
                     item.googsName = s[0];
@@ -161,6 +163,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
             String[] s = fileName.substring(0, fileName.lastIndexOf(".")).split("-");
             order.datetime = getFileLocalDateTime(path);
             order.shopId = s[0];
+            if (s[0].length() != 3) return false; // критическая ошибка, из за тестера
             order.orderId = s[1];
             if (s[1].length() != 6) return false; // критическая ошибка, из за тестера
             order.customerId = s[2];
@@ -194,7 +197,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
     // выдать список заказов в порядке обработки (отсортированные по дате-времени), для заданного магазина.
     // Если shopId == null, то для всех
     public List<Order> process(String shopId) {
-        if (shopId == null || shopId.compareTo(loadedShopId) == 0) return orders;
+        if (shopId == null || (loadedShopId!=null && shopId.compareTo(loadedShopId) == 0)) return orders;
         List<Order> result = new ArrayList<Order>();
         for (Order o : orders) {
             if (o.shopId == shopId) result.add(o);
@@ -243,7 +246,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
     // test
     public static void main(String[] args) {
         OrderProcessor p = new OrderProcessor("C:\\Users\\Darya\\IdeaProjects\\java1\\src\\ru\\progwards\\java1\\lessons\\files\\orders");
-        p.loadOrders(LocalDate.now(), LocalDate.now(), "S02");
+        System.out.println(p.loadOrders(LocalDate.now(), LocalDate.now(), null));
         System.out.println(p.process("S02"));
         System.out.println(p.statisticsByShop());
         System.out.println(p.statisticsByGoods());
