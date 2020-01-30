@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -115,8 +116,8 @@ ZZZZ - обязательные 4 символа customerId - идентифик
         for (Path path : paths) {
             if (!loadOrderFromFile(path)) {
                 failedFiles++;
-                //System.out.println("Processing failed: "+path);
-            } //else { System.out.println("Ok: "+path); }
+                System.out.println("Processing failed: "+path);
+            } else { System.out.println("Ok: "+path); }
         }
         //System.out.println(orders);
         //sortOrders(); // отсортируем orders // отсортировали файлы ранее, потому это не надо
@@ -198,7 +199,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
         if (shopId == null || (loadedShopId!=null && shopId.compareTo(loadedShopId) == 0)) return orders;
         List<Order> result = new ArrayList<Order>();
         for (Order o : orders) {
-            if (o.shopId == shopId) result.add(o);
+            if (o.shopId.compareTo(shopId)==0) result.add(o);
         }
         return result;
     }
@@ -244,10 +245,11 @@ ZZZZ - обязательные 4 символа customerId - идентифик
     // test
     public static void main(String[] args) {
         OrderProcessor p = new OrderProcessor("C:\\Users\\Darya\\IdeaProjects\\java1\\src\\ru\\progwards\\java1\\lessons\\files\\orders");
-        System.out.println(p.loadOrders(LocalDate.now(), LocalDate.now(), null));
+        //System.out.println(p.loadOrders(LocalDate.of(2020, Month.JANUARY, 31), null, null));
+        System.out.println(p.loadOrders(null, null, null));
         System.out.println(p.process("S02"));
-        System.out.println(p.statisticsByShop());
-        System.out.println(p.statisticsByGoods());
-        System.out.println(p.statisticsByDay());
+        //System.out.println(p.statisticsByShop());
+        //System.out.println(p.statisticsByGoods());
+        //System.out.println(p.statisticsByDay());
     }
 }
