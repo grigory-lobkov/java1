@@ -1,7 +1,5 @@
 package ru.progwards.java1.lessons.files;
 
-import com.google.common.base.Strings;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -91,7 +89,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
 
         // список файлов с информацией о заказах
         // плохо, что имена папок "не имеют значения". В имя папки или файла обязательно надо было сделать привязку к дате. Как процессинг будет работать через 10 лет!?
-        String shopFilter = Strings.isNullOrEmpty(shopId) ? "???" : shopId;
+        String shopFilter = shopId==null ? "???" : shopId;
         //String pattern = "glob:**/" + shopFilter + "-??????-????.csv"; // tester not passed
         String pattern = "glob:**/" + shopFilter + "-*-*.csv";
         PathMatcher pathMatcher1 = FileSystems.getDefault().getPathMatcher(pattern);
@@ -146,7 +144,7 @@ ZZZZ - обязательные 4 символа customerId - идентифик
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
-                    if (Strings.isNullOrEmpty(line)) continue;
+                    if (line.compareTo("")==0) continue;
                     String[] s = line.split(DELIMITER);
                     if (s.length != 3) return false; // критическая ошибка
                     OrderItem item = new OrderItem();
