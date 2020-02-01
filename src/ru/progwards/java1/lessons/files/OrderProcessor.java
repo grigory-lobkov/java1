@@ -6,7 +6,6 @@ import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -91,8 +90,8 @@ ZZZZ - обязательные 4 символа customerId - идентифик
         // список файлов с информацией о заказах
         // плохо, что имена папок "не имеют значения". В имя папки или файла обязательно надо было сделать привязку к дате. Как процессинг будет работать через 10 лет!?
         String shopFilter = shopId==null ? "???" : shopId;
-        //String pattern = "glob:**/" + shopFilter + "-??????-????.csv"; // tester not passed
-        String pattern = "glob:**/" + shopFilter + "-*-*.csv";
+        String pattern = "glob:**/" + shopFilter + "-??????-????.csv"; // tester not passed
+        //String pattern = "glob:**/" + shopFilter + "-*-*.csv"; // tester changed his mind )
         PathMatcher pathMatcher1 = FileSystems.getDefault().getPathMatcher(pattern);
         try {
             paths = Files.walk(startPath)
@@ -244,10 +243,11 @@ ZZZZ - обязательные 4 символа customerId - идентифик
 
     // test
     public static void main(String[] args) {
-        OrderProcessor p = new OrderProcessor("C:\\Users\\Darya\\IdeaProjects\\java1\\src\\ru\\progwards\\java1\\lessons\\files\\orders");
+        //OrderProcessor p = new OrderProcessor("C:\\Users\\Darya\\IdeaProjects\\java1\\src\\ru\\progwards\\java1\\lessons\\files\\orders");
+        OrderProcessor p = new OrderProcessor("C:\\Users\\Grigory\\IdeaProjects\\java1\\src\\ru\\progwards\\java1\\lessons\\files\\orders");
         //System.out.println(p.loadOrders(LocalDate.of(2020, Month.JANUARY, 31), null, null));
         System.out.println(p.loadOrders(null, null, null));
-        System.out.println(p.process("S02"));
+        System.out.println(p.process(null));
         //System.out.println(p.statisticsByShop());
         //System.out.println(p.statisticsByGoods());
         //System.out.println(p.statisticsByDay());
