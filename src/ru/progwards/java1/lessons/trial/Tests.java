@@ -56,18 +56,19 @@ public class Tests {
         System.out.println(Arrays.toString(subArray(array, 2, 6)));// должен вернуть null
     }
 
-/*Напишите функцию с сигнатурой void testJava(String str)
-которая выводит на консоль строку "Учиться в Progwards это "+ str
+    /*Напишите функцию с сигнатурой void testJava(String str)
+    которая выводит на консоль строку "Учиться в Progwards это "+ str
 
-Например, при вызове testJava("интересно!") на консоль должно
-быть выведено "Изучать Java это интересно!"
+    Например, при вызове testJava("интересно!") на консоль должно
+    быть выведено "Изучать Java это интересно!"
 
-Для тех, кто не знает как это сделать, скопируйте следующий код в окно с ответом*/
+    Для тех, кто не знает как это сделать, скопируйте следующий код в окно с ответом*/
     void testJava(String str) {
-        System.out.println("Учиться в Progwards это "+ str);
+        System.out.println("Учиться в Progwards это " + str);
     }
+
     static String wordGrade(int num) {
-        switch(num) {
+        switch (num) {
             case 0: return "не оценено";
             case 1: return "очень плохо";
             case 2: return "плохо";
@@ -97,7 +98,7 @@ subArray({array, 2,6) должен вернуть null
 
     static int[] subArray(int[] array, int from, int to) {
         int l = array.length - 1;
-        if (from > l || to > l) return null;
+        if (from > l || to > l || from < 0 || to < 0 || to < from) return null;
         l = to - from + 1;
         int[] result = new int[l];
         //for(int i = from, k = 0; i<=to; i++, k++) result[k] = array[i];
