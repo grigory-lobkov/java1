@@ -87,7 +87,38 @@ public class FindDuplicates {
         return result;
     }
 
+    // сравнить содержимое двух файлов
     public static boolean isEqualPaths(Path path1, Path path2) {
+        try (
+                InputStream f1 = Files.newInputStream(path1);
+                InputStream f2 = Files.newInputStream(path2);
+        ) {
+            long fSize = Files.size(path1);
+            int bufSize = (int) (fSize / 16);
+            final int minBufSize = 128 * 1024;
+            final int maxBufSize = 1 * 1024 * 1024;
+            if (bufSize > maxBufSize || fSize > Integer.MAX_VALUE) bufSize = maxBufSize;
+            else if (bufSize < minBufSize)
+                if (fSize < minBufSize) bufSize = (int) fSize;
+                else bufSize = (int) fSize / 4;
+            try (
+                    BufferedInputStream s1 = new BufferedInputStream(f1, bufSize);
+                    BufferedInputStream s2 = new BufferedInputStream(f2, bufSize);
+            ) {
+                int b1 = 0;
+                while ((b1 = s1.read()) != -1) {
+                    if (b1 != s2.read()) return false;
+                }
+                //System.out.println(b1);
+                return s2.read() == -1;
+                //return false;
+            }
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    public static boolean isEqualPaths2(Path path1, Path path2) {
         try (
                 InputStream f1 = Files.newInputStream(path1);
                 InputStream f2 = Files.newInputStream(path2);
@@ -232,7 +263,8 @@ public class FindDuplicates {
         //System.out.println(readAllFilesIo("src"));
         //System.out.println(readAllFilesNio("src"));
         //System.out.println(readAllFilesLambda("src"));
-        System.out.println(findDuplicates(".").toString().replace("], ", "]," + (char) 10));
+        //System.out.println(findDuplicates(".").toString().replace("], ", "]," + (char) 10));
         //System.out.println(findDuplicates("c:/windows").toString().replace("], ", "],"+(char)10));
+        System.out.println(findDuplicates("c:/TEMP").toString().replace("], ", "]," + (char) 10));
     }
 }
